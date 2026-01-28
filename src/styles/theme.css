@@ -166,6 +166,22 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
+  /* INTENSO color utilities */
+  --color-intenso-teal: var(--intenso-teal-500);
+  --color-intenso-teal-hover: var(--intenso-teal-600);
+  --color-intenso-teal-active: var(--intenso-teal-700);
+  --color-intenso-teal-soft: var(--intenso-teal-50);
+
+  --color-intenso-purple: var(--intenso-purple-500);
+  --color-intenso-pink: var(--intenso-pink-500);
+  --color-intenso-yellow: var(--intenso-yellow-500);
+
+  --color-intenso-bg: var(--intenso-bg);
+  --color-intenso-surface: var(--intenso-surface);
+  --color-intenso-border: var(--intenso-border);
+  --color-intenso-text: var(--intenso-text);
+  --color-intenso-text-muted: var(--intenso-text-muted);
+
   /* Tailwind font families */
   --font-sans: var(--intenso-font-body);
   --font-display: var(--intenso-font-display);
@@ -243,5 +259,24 @@
     font-size: var(--text-base);
     font-weight: var(--font-weight-normal);
     line-height: 1.5;
+  }
+}
+
+@layer utilities {
+  .kpi-number {
+    font-family: var(--intenso-font-display);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+    color: var(--foreground);
+  }
+
+  .kpi-label {
+    font-family: var(--intenso-font-body);
+    letter-spacing: 0.02em;
+    color: var(--muted-foreground);
+  }
+
+  .kpi-emphasis {
+    color: var(--primary);
   }
 }
