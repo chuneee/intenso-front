@@ -1,26 +1,16 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 
 import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { useAuth } from "@/context/AuthContext";
 import {
-  Briefcase,
-  Sparkles,
-  Shield,
   Eye,
   EyeOff,
   ChevronRight,
+  Mail,
+  Lock,
 } from "lucide-react";
-
-type RolePreset = {
-  id: "marca" | "creador" | "admin";
-  label: string;
-  description: string;
-  icon: React.ComponentType<{ className?: string }>;
-  badgeVariant: "purple" | "pink" | "secondary";
-  onFill: () => void;
-};
 
 const LoginPage: React.FC = () => {
   const { login } = useAuth();
@@ -39,53 +29,6 @@ const LoginPage: React.FC = () => {
     if (!success) setError("Credenciales incorrectas");
   };
 
-  const fillMarcaDemo = () => {
-    setEmail("contacto@techbrand.com");
-    setPassword("demo123");
-    setError("");
-  };
-
-  const fillCreadorDemo = () => {
-    setEmail("contact@mariarodriguez.com");
-    setPassword("demo123");
-    setError("");
-  };
-
-  const fillAdminDemo = () => {
-    setEmail("admin@creatorhub.com");
-    setPassword("demo123");
-    setError("");
-  };
-
-  const rolePresets: RolePreset[] = useMemo(
-    () => [
-      {
-        id: "marca",
-        label: "Entrar como Marca",
-        description: "Gestiona campanas, compras y resultados.",
-        icon: Briefcase,
-        badgeVariant: "purple",
-        onFill: fillMarcaDemo,
-      },
-      {
-        id: "creador",
-        label: "Entrar como Creador",
-        description: "Colaboraciones, entregables y metrics.",
-        icon: Sparkles,
-        badgeVariant: "pink",
-        onFill: fillCreadorDemo,
-      },
-      {
-        id: "admin",
-        label: "Entrar como Admin",
-        description: "Control total del sistema y usuarios.",
-        icon: Shield,
-        badgeVariant: "secondary",
-        onFill: fillAdminDemo,
-      },
-    ],
-    [],
-  );
 
   return (
     <div className="min-h-screen bg-intenso-bg">
@@ -127,30 +70,38 @@ const LoginPage: React.FC = () => {
             {/* Hero copy (centrado en el alto disponible) */}
             <div className="flex-1 flex items-center">
               <div className="max-w-md">
-                <h1 className="font-display text-4xl xl:text-5xl leading-[1.05] tracking-tight">
+                <h1 className="font-display text-5xl xl:text-6xl leading-[1.02] tracking-tight">
                   Trabajamos con
                   <br />
                   marcas humanas.
                 </h1>
 
-                <p className="mt-5 text-white/85 text-base xl:text-lg leading-relaxed">
+                <p className="mt-6 text-white/85 text-lg xl:text-xl leading-relaxed">
                   Orden para tu operacion creativa: campañas, creadores y resultados en un
                   solo lugar.
                 </p>
 
                 {/* Cards */}
                 <div className="mt-8 grid grid-cols-3 gap-3 max-w-sm">
-                  <div className="rounded-xl bg-white/10 border border-white/15 px-3 py-3">
-                    <div className="font-display text-xl">Orden</div>
-                    <div className="text-xs text-white/80 mt-1">Operacion clara</div>
+                  <div className="min-h-[72px] rounded-xl bg-white/10 border border-white/15 px-4 py-3">
+                    <div className="font-display text-lg xl:text-xl leading-none">
+                      Orden
+                    </div>
+                    <div className="mt-1 text-[11px] xl:text-xs leading-snug text-white/80">
+                      Operacion clara
+                    </div>
                   </div>
-                  <div className="rounded-xl bg-white/10 border border-white/15 px-3 py-3">
-                    <div className="font-display text-xl">Foco</div>
-                    <div className="text-xs text-white/80 mt-1">KPIs y control</div>
+                  <div className="min-h-[72px] rounded-xl bg-white/10 border border-white/15 px-4 py-3">
+                    <div className="font-display text-lg xl:text-xl leading-none">Foco</div>
+                    <div className="mt-1 text-[11px] xl:text-xs leading-snug text-white/80">
+                      KPIs y control
+                    </div>
                   </div>
-                  <div className="rounded-xl bg-white/10 border border-white/15 px-3 py-3">
-                    <div className="font-display text-xl">Alma</div>
-                    <div className="text-xs text-white/80 mt-1">Creatividad viva</div>
+                  <div className="min-h-[72px] rounded-xl bg-white/10 border border-white/15 px-4 py-3">
+                    <div className="font-display text-lg xl:text-xl leading-none">Alma</div>
+                    <div className="mt-1 text-[11px] xl:text-xs leading-snug text-white/80">
+                      Creatividad viva
+                    </div>
                   </div>
                 </div>
               </div>
@@ -158,7 +109,7 @@ const LoginPage: React.FC = () => {
 
             {/* Footer al fondo */}
             <div className="pt-10 text-xs text-white/70">
-              La estrella representa la "o" de intenso y guia tu experiencia.
+              Una estrella para guiar tu operacion creativa.
             </div>
           </div>
         </aside>
@@ -166,57 +117,63 @@ const LoginPage: React.FC = () => {
         {/* Right - Form */}
         <main className="flex-1 flex items-center justify-center p-4 sm:p-8">
           <div className="w-full max-w-md">
-            <div className="rounded-2xl bg-intenso-surface border border-intenso-border shadow-sm p-6 sm:p-8 animate-in fade-in-0 slide-in-from-bottom-2 duration-500">
-              {/* Mobile header */}
-              <div className="lg:hidden flex items-center justify-center mb-6">
-                <img
-                  src="/img/logo.png"
-                  alt="INTENSO"
-                  className="h-11 w-auto"
-                  draggable={false}
-                />
-              </div>
+            <div className="rounded-2xl bg-intenso-surface border border-intenso-border shadow-sm overflow-hidden animate-in fade-in-0 slide-in-from-bottom-2 duration-500">
+              {/* Brand rail */}
+              <div className="h-1.5 bg-gradient-to-r from-intenso-teal via-intenso-teal-hover to-intenso-teal-active" />
 
-              <div className="space-y-2">
-                <h2 className="font-display text-2xl sm:text-3xl tracking-tight text-intenso-text">
-                  Bienvenido de vuelta
-                </h2>
-                <p className="text-sm sm:text-base text-intenso-text-muted">
-                  Inicia sesion y continua tu operacion con claridad.
-                </p>
-              </div>
+              <div className="p-6 sm:p-8">
+                {/* Mobile header */}
+                <div className="lg:hidden flex items-center justify-center mb-6">
+                  <img
+                    src="/img/logo.png"
+                    alt="INTENSO"
+                    className="h-11 w-auto"
+                    draggable={false}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <h2 className="font-display text-3xl sm:text-4xl tracking-tight text-intenso-text">
+                    Inicia sesion
+                  </h2>
+                  <p className="text-sm sm:text-base text-intenso-text-muted">
+                    Te dejamos todo listo para continuar.
+                  </p>
+                </div>
+
 
               <form onSubmit={handleLogin} className="mt-6 space-y-5">
                 <div className="space-y-2">
                   <Label htmlFor="email" className="text-sm text-intenso-text">
                     Correo electronico
                   </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="tucorreo@empresa.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="h-11"
-                    required
-                  />
+                  <div className="relative">
+                    <Mail className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-intenso-text-muted" />
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="tucorreo@empresa.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="h-11 pl-9"
+                      required
+                    />
+                  </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label
-                    htmlFor="password"
-                    className="text-sm text-intenso-text"
-                  >
+                  <Label htmlFor="password" className="text-sm text-intenso-text">
                     Contrasena
                   </Label>
                   <div className="relative">
+                    <Lock className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-intenso-text-muted" />
                     <Input
                       id="password"
                       type={showPassword ? "text" : "password"}
                       placeholder="Tu contrasena"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="h-11 pr-12"
+                      className="h-11 pl-9 pr-12"
                       required
                     />
                     <button
@@ -224,9 +181,7 @@ const LoginPage: React.FC = () => {
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-2 text-intenso-text-muted hover:text-intenso-text hover:bg-muted"
                       aria-label={
-                        showPassword
-                          ? "Ocultar contrasena"
-                          : "Mostrar contrasena"
+                        showPassword ? "Ocultar contrasena" : "Mostrar contrasena"
                       }
                     >
                       {showPassword ? (
@@ -269,51 +224,11 @@ const LoginPage: React.FC = () => {
                   Iniciar sesion
                   <ChevronRight className="size-4" />
                 </Button>
+
+                <p className="text-center text-xs text-intenso-text-muted">
+                  Tus datos estan protegidos. Acceso seguro.
+                </p>
               </form>
-
-              <div className="my-6 flex items-center gap-3">
-                <div className="h-px flex-1 bg-intenso-border" />
-                <div className="text-xs text-intenso-text-muted">
-                  Accesos rapidos
-                </div>
-                <div className="h-px flex-1 bg-intenso-border" />
-              </div>
-
-              <div className="space-y-2">
-                {rolePresets.map((preset) => {
-                  const Icon = preset.icon;
-
-                  return (
-                    <button
-                      key={preset.id}
-                      type="button"
-                      onClick={preset.onFill}
-                      className="w-full group flex items-center gap-3 rounded-xl border border-intenso-border bg-intenso-surface px-3 py-3 text-left transition-[background-color,box-shadow,border-color] hover:bg-intenso-teal-soft/35 hover:border-intenso-teal/25"
-                    >
-                      <div
-                        className={`size-9 rounded-lg flex items-center justify-center text-white shadow-sm ${
-                          preset.badgeVariant === "purple"
-                            ? "bg-intenso-purple"
-                            : preset.badgeVariant === "pink"
-                              ? "bg-intenso-pink"
-                              : "bg-intenso-teal"
-                        }`}
-                      >
-                        <Icon className="size-4" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="text-sm font-medium text-intenso-text">
-                          {preset.label}
-                        </div>
-                        <div className="text-xs text-intenso-text-muted">
-                          {preset.description}
-                        </div>
-                      </div>
-                      <ChevronRight className="size-4 text-intenso-text-muted group-hover:text-intenso-teal" />
-                    </button>
-                  );
-                })}
-              </div>
 
               <p className="mt-6 text-center text-xs text-intenso-text-muted">
                 No tienes cuenta?{" "}
@@ -325,6 +240,7 @@ const LoginPage: React.FC = () => {
                 </button>
               </p>
             </div>
+          </div>
           </div>
         </main>
       </div>
