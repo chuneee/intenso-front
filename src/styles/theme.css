@@ -5,7 +5,7 @@
   --font-size: 16px;
 
   /* Brand palette (INTENSO) */
-  --intenso-teal-500: #408b8c;
+  --intenso-teal-500: #0e8d8d;
   --intenso-teal-600: #35797a;
   --intenso-teal-700: #2c6768;
   --intenso-teal-50: #e6f2f2;
@@ -70,12 +70,11 @@
   --sidebar-foreground: var(--intenso-text);
   --sidebar-primary: var(--intenso-teal-500);
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: rgba(64, 139, 140, 0.10);
+  --sidebar-accent: rgba(64, 139, 140, 0.1);
   --sidebar-accent-foreground: var(--intenso-teal-700);
   --sidebar-border: var(--intenso-border);
   --sidebar-ring: var(--ring);
 }
-
 
 .dark {
   --background: #0b1220;
@@ -90,7 +89,7 @@
   --primary: var(--intenso-teal-500);
   --primary-foreground: #ffffff;
 
-  --secondary: rgba(230, 242, 242, 0.10);
+  --secondary: rgba(230, 242, 242, 0.1);
   --secondary-foreground: #f3f4f6;
 
   --muted: rgba(255, 255, 255, 0.06);
@@ -114,7 +113,7 @@
   --chart-2: var(--intenso-purple-500);
   --chart-3: var(--intenso-pink-500);
   --chart-4: var(--intenso-yellow-500);
-  --chart-5: rgba(229, 231, 235, 0.70);
+  --chart-5: rgba(229, 231, 235, 0.7);
 
   --sidebar: rgba(255, 255, 255, 0.03);
   --sidebar-foreground: #f3f4f6;
