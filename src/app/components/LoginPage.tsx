@@ -24,380 +24,210 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-intenso-bg">
-      <div className="min-h-screen flex items-stretch">
-        {/* Left - Brand */}
-        <aside className="hidden lg:flex relative w-[54%] xl:w-[52%] min-h-screen overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-intenso-teal via-intenso-teal to-intenso-teal-active" />
+    <div className="min-h-screen w-full bg-gradient-to-br from-intenso-teal via-intenso-teal to-intenso-teal-active flex items-center justify-center p-4 lg:p-8 relative overflow-hidden">
+      {/* --- Ambient Background --- */}
+      {/* Decorative Stars */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 opacity-[0.08]">
+          <img
+            src="/img/isotipo.png"
+            alt=""
+            className="absolute -top-[10%] -right-[5%] w-[800px] rotate-12 select-none"
+            draggable={false}
+          />
+          <img
+            src="/img/isotipo.png"
+            alt=""
+            className="absolute -bottom-[10%] -left-[10%] w-[900px] -rotate-6 select-none"
+            draggable={false}
+          />
+        </div>
+        {/* Soft Spotlights */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.12),transparent_55%),radial-gradient(circle_at_80%_80%,rgba(255,255,255,0.08),transparent_50%)]" />
+      </div>
 
-          {/* Star pattern layer */}
-          <div className="absolute inset-0 opacity-[0.10]">
+      {/* --- Main Content Grid --- */}
+      <div className="w-full max-w-7xl grid lg:grid-cols-2 gap-12 lg:gap-24 items-center relative z-10">
+        {/* Left Column: Brand Narrative (Desktop) */}
+        <div className="hidden lg:flex flex-col text-white pl-4 xl:pl-0">
+          <div className="flex items-center gap-3 mb-10">
             <img
-              src="/img/isotipo.png"
-              alt=""
-              className="absolute -top-24 -right-24 w-[520px] rotate-12 select-none pointer-events-none"
+              src="/img/logo.png"
+              alt="intenso"
+              className="h-10 xl:h-12 w-auto origin-left scale-[1.3]"
               draggable={false}
             />
+          </div>
+
+          <h1 className="font-display text-5xl xl:text-7xl leading-[0.95] tracking-tight">
+            Trabajamos con
+            <br />
+            marcas humanas.
+          </h1>
+
+          <p className="mt-8 text-white/90 text-lg xl:text-xl leading-relaxed max-w-lg font-light">
+            Orden para tu operación creativa: campañas, creadores y resultados
+            en un solo lugar.
+          </p>
+
+          {/* Pillars Cards */}
+          <div className="mt-12 grid grid-cols-3 gap-4 max-w-md">
+            <div className="rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-4 transition-transform hover:-translate-y-1 duration-300">
+              <div className="font-display text-xl mb-1">Orden</div>
+              <div className="text-xs text-white/80 leading-snug">
+                Operación clara
+              </div>
+            </div>
+            <div className="rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-4 transition-transform hover:-translate-y-1 duration-300 delay-75">
+              <div className="font-display text-xl mb-1">Foco</div>
+              <div className="text-xs text-white/80 leading-snug">
+                KPIs y control
+              </div>
+            </div>
+            <div className="rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-4 transition-transform hover:-translate-y-1 duration-300 delay-150">
+              <div className="font-display text-xl mb-1">Alma</div>
+              <div className="text-xs text-white/80 leading-snug">
+                Creatividad viva
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-16 text-xs text-white/60 font-medium">
+            Una estrella para guiar tu operación creativa.
+          </div>
+        </div>
+
+        {/* Right Column: Floating Login Card */}
+        <div className="w-full flex justify-center lg:justify-end">
+          {/* Mobile Brand Header */}
+          <div className="lg:hidden absolute top-8 left-0 w-full text-center text-white pointer-events-none">
             <img
-              src="/img/isotipo.png"
-              alt=""
-              className="absolute -bottom-28 -left-24 w-[560px] -rotate-6 select-none pointer-events-none"
-              draggable={false}
+              src="/img/logo.png"
+              alt="Intenso"
+              className="h-8 mx-auto opacity-90 drop-shadow-md"
             />
           </div>
 
-          {/* Soft glow */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(255,255,255,0.22),transparent_45%),radial-gradient(circle_at_80%_80%,rgba(255,255,255,0.16),transparent_50%)]" />
-
-          <div className="relative z-10 flex flex-col p-10 xl:p-14 text-white w-full">
-            {/* Logo */}
-            <div className="flex items-center gap-3">
-              <img
-                src="/img/logo.png"
-                alt="intenso"
-                className="h-10 xl:h-12 w-auto transform-gpu origin-left scale-[1.35] xl:scale-[1.45]"
-                draggable={false}
-              />
-            </div>
-
-            {/* Hero copy (centrado en el alto disponible) */}
-            <div className="flex-1 flex items-center">
-              <div className="max-w-md">
-                <h1 className="font-display text-5xl xl:text-6xl leading-[1.02] tracking-tight">
-                  Trabajamos con
-                  <br />
-                  marcas humanas.
-                </h1>
-
-                <p className="mt-6 text-white/85 text-lg xl:text-xl leading-relaxed">
-                  Orden para tu operacion creativa: campañas, creadores y
-                  resultados en un solo lugar.
-                </p>
-
-                {/* Cards */}
-                <div className="mt-8 grid grid-cols-3 gap-3 max-w-sm">
-                  <div className="min-h-[72px] rounded-xl bg-white/10 border border-white/15 px-4 py-3">
-                    <div className="font-display text-lg xl:text-xl leading-none">
-                      Orden
-                    </div>
-                    <div className="mt-1 text-[11px] xl:text-xs leading-snug text-white/80">
-                      Operacion clara
-                    </div>
-                  </div>
-                  <div className="min-h-[72px] rounded-xl bg-white/10 border border-white/15 px-4 py-3">
-                    <div className="font-display text-lg xl:text-xl leading-none">
-                      Foco
-                    </div>
-                    <div className="mt-1 text-[11px] xl:text-xs leading-snug text-white/80">
-                      KPIs y control
-                    </div>
-                  </div>
-                  <div className="min-h-[72px] rounded-xl bg-white/10 border border-white/15 px-4 py-3">
-                    <div className="font-display text-lg xl:text-xl leading-none">
-                      Alma
-                    </div>
-                    <div className="mt-1 text-[11px] xl:text-xs leading-snug text-white/80">
-                      Creatividad viva
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Footer al fondo */}
-            <div className="pt-10 text-xs text-white/70">
-              Una estrella para guiar tu operacion creativa.
-            </div>
-          </div>
-        </aside>
-
-        {/* Right - Form */}
-        <main className="flex-1 relative overflow-hidden">
-          {/* Mobile: single narrative (Option C controlled) */}
-          <div className="lg:hidden min-h-screen flex flex-col justify-end bg-gradient-to-br from-intenso-teal via-intenso-teal to-intenso-teal-active">
-            {/* Stars */}
-            <div className="absolute inset-0 opacity-[0.08]">
-              <img
-                src="/img/isotipo.png"
-                alt=""
-                className="absolute -top-28 -right-28 w-[520px] rotate-12 select-none pointer-events-none"
-                draggable={false}
-              />
-              <img
-                src="/img/isotipo.png"
-                alt=""
-                className="absolute -bottom-32 -left-28 w-[560px] -rotate-6 select-none pointer-events-none"
-                draggable={false}
-              />
-            </div>
-
-            {/* Soft glow */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(255,255,255,0.22),transparent_48%),radial-gradient(circle_at_82%_78%,rgba(255,255,255,0.14),transparent_56%)]" />
-
-            {/* Top brand */}
-            <div className="relative px-6 pt-10 pb-8">
-              <img
-                src="/img/logo.png"
-                alt="INTENSO"
-                className="h-10 w-auto"
-                draggable={false}
-              />
-              <p className="mt-4 font-display text-white/95 text-xl leading-snug">
-                Trabajamos con marcas humanas.
-              </p>
-            </div>
-
-            {/* Bottom sheet */}
-            <section className="relative w-full rounded-t-[32px] bg-white/95 shadow-[0_-18px_55px_rgba(17,24,39,0.28)] border-t border-white/70">
-              <div className="mx-auto mt-3 h-1 w-10 rounded-full bg-black/10" />
-
-              <div className="mx-auto max-w-md px-6 pt-7 pb-10 max-h-[74vh] overflow-y-auto">
-                <div className="space-y-2">
-                  <h2 className="font-display text-3xl tracking-tight text-intenso-text">
-                    Inicia sesion
-                  </h2>
-                  <p className="text-sm text-intenso-text-muted">
-                    Te dejamos todo listo para continuar.
-                  </p>
-                </div>
-
-                <form onSubmit={handleLogin} className="mt-6 space-y-5">
-                  <div className="space-y-2">
-                    <Label
-                      htmlFor="email"
-                      className="text-sm text-intenso-text"
-                    >
-                      Correo electronico
-                    </Label>
-                    <div className="relative">
-                      <Mail className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-intenso-text-muted" />
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="tucorreo@empresa.com"
-                        value={email}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          setEmail(e.target.value)
-                        }
-                        className="h-11 pl-9"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label
-                      htmlFor="password"
-                      className="text-sm text-intenso-text"
-                    >
-                      Contrasena
-                    </Label>
-                    <div className="relative">
-                      <Lock className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-intenso-text-muted" />
-                      <Input
-                        id="password"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Tu contrasena"
-                        value={password}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          setPassword(e.target.value)
-                        }
-                        className="h-11 pl-9 pr-12"
-                        required
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-2 text-intenso-text-muted hover:text-intenso-text hover:bg-muted"
-                        aria-label={
-                          showPassword
-                            ? "Ocultar contrasena"
-                            : "Mostrar contrasena"
-                        }
-                      >
-                        {showPassword ? (
-                          <EyeOff className="w-5 h-5" />
-                        ) : (
-                          <Eye className="w-5 h-5" />
-                        )}
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between gap-4">
-                    <label className="flex items-center gap-2 cursor-pointer select-none">
-                      <input
-                        type="checkbox"
-                        checked={rememberMe}
-                        onChange={(e) => setRememberMe(e.target.checked)}
-                        className="h-4 w-4 rounded border-intenso-border text-intenso-teal focus:ring-2 focus:ring-ring/50"
-                      />
-                      <span className="text-sm text-intenso-text-muted">
-                        Recordarme
-                      </span>
-                    </label>
-
-                    <button
-                      type="button"
-                      className="text-sm text-intenso-text-muted hover:text-intenso-teal"
-                    >
-                      Olvide mi contrasena
-                    </button>
-                  </div>
-
-                  {error && (
-                    <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
-                      {error}
-                    </div>
-                  )}
-
-                  <Button type="submit" className="w-full h-11 rounded-xl">
-                    Iniciar sesion
-                    <ChevronRight className="size-4" />
-                  </Button>
-
-                  <p className="text-center text-xs text-intenso-text-muted">
-                    Tus datos estan protegidos. Acceso seguro.
-                  </p>
-                </form>
-
-                <p className="mt-6 text-center text-xs text-intenso-text-muted">
-                  No tienes cuenta?{" "}
-                  <button
-                    type="button"
-                    className="font-medium text-intenso-teal hover:underline"
-                  >
-                    Registrate
-                  </button>
-                </p>
-              </div>
-            </section>
-          </div>
-
-          {/* Desktop/tablet: full width right panel */}
-          <div className="hidden lg:flex min-h-screen w-full bg-white/95 items-center justify-center p-10 xl:p-14 relative overflow-hidden">
-            {/* Panel atmosphere (optional, similar to previous but full background now) */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_16%_12%,color-mix(in_srgb,var(--intenso-teal-500)_5%,transparent),transparent_52%),radial-gradient(circle_at_92%_78%,color-mix(in_srgb,var(--intenso-purple-500)_4%,transparent),transparent_60%)] pointer-events-none" />
-
-            <div className="relative w-full max-w-md z-10">
-              <div className="space-y-2">
-                <h2 className="font-display text-4xl tracking-tight text-intenso-text">
+          <div className="bg-white/100 rounded-[32px] shadow-[0_25px_60px_-12px_rgba(0,0,0,0.3)] p-8 md:p-10 xl:p-12 w-full max-w-[480px] backdrop-blur-sm relative overflow-hidden ring-1 ring-white/50">
+            {/* Inner content */}
+            <div className="relative z-10">
+              <div className="space-y-2 mb-8">
+                <h2 className="font-display text-3xl tracking-tight text-intenso-text">
                   Inicia sesión
                 </h2>
-                <p className="text-base text-intenso-text-muted">
+                <p className="text-sm text-intenso-text-muted">
                   Te dejamos todo listo para continuar.
                 </p>
               </div>
 
-              <form onSubmit={handleLogin} className="mt-10 space-y-6">
+              <form onSubmit={handleLogin} className="space-y-5">
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-sm text-intenso-text">
-                    Correo electronico
+                  <Label
+                    htmlFor="email"
+                    className="text-sm font-medium text-intenso-text"
+                  >
+                    Correo electrónico
                   </Label>
-                  <div className="relative">
-                    <Mail className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-intenso-text-muted" />
+                  <div className="relative group">
+                    <Mail className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-intenso-text-muted group-focus-within:text-intenso-teal transition-colors" />
                     <Input
                       id="email"
                       type="email"
                       placeholder="tucorreo@empresa.com"
                       value={email}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        setEmail(e.target.value)
-                      }
-                      className="h-11 pl-9"
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="h-11 pl-10 bg-gray-50/50 border-gray-200 focus:bg-white transition-all"
                       required
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label
-                    htmlFor="password"
-                    className="text-sm text-intenso-text"
-                  >
-                    Contrasena
-                  </Label>
-                  <div className="relative">
-                    <Lock className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-intenso-text-muted" />
+                  <div className="flex items-center justify-between">
+                    <Label
+                      htmlFor="password"
+                      className="text-sm font-medium text-intenso-text"
+                    >
+                      Contraseña
+                    </Label>
+                    <button
+                      type="button"
+                      className="text-xs text-intenso-text-muted hover:text-intenso-teal font-medium"
+                    >
+                      ¿Olvidaste tu contraseña?
+                    </button>
+                  </div>
+                  <div className="relative group">
+                    <Lock className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-intenso-text-muted group-focus-within:text-intenso-teal transition-colors" />
                     <Input
                       id="password"
                       type={showPassword ? "text" : "password"}
-                      placeholder="Tu contrasena"
+                      placeholder="••••••••"
                       value={password}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        setPassword(e.target.value)
-                      }
-                      className="h-11 pl-9 pr-12"
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="h-11 pl-10 pr-12 bg-gray-50/50 border-gray-200 focus:bg-white transition-all"
                       required
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-2 text-intenso-text-muted hover:text-intenso-text hover:bg-muted"
-                      aria-label={
-                        showPassword
-                          ? "Ocultar contrasena"
-                          : "Mostrar contrasena"
-                      }
+                      className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-2 text-intenso-text-muted hover:text-intenso-text hover:bg-gray-100"
                     >
                       {showPassword ? (
-                        <EyeOff className="w-5 h-5" />
+                        <EyeOff className="w-4 h-4" />
                       ) : (
-                        <Eye className="w-5 h-5" />
+                        <Eye className="w-4 h-4" />
                       )}
                     </button>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between gap-4">
-                  <label className="flex items-center gap-2 cursor-pointer select-none">
-                    <input
-                      type="checkbox"
-                      checked={rememberMe}
-                      onChange={(e) => setRememberMe(e.target.checked)}
-                      className="h-4 w-4 rounded border-intenso-border text-intenso-teal focus:ring-2 focus:ring-ring/50"
-                    />
-                    <span className="text-sm text-intenso-text-muted">
-                      Recordarme
-                    </span>
-                  </label>
-
-                  <button
-                    type="button"
-                    className="text-sm text-intenso-text-muted hover:text-intenso-teal"
+                <div className="flex items-center gap-2 pt-1">
+                  <input
+                    type="checkbox"
+                    id="remember"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="h-4 w-4 rounded border-gray-300 text-intenso-teal focus:ring-intenso-teal/20"
+                  />
+                  <label
+                    htmlFor="remember"
+                    className="text-sm text-intenso-text-muted cursor-pointer select-none"
                   >
-                    Olvide mi contrasena
-                  </button>
+                    Recordar mi sesión
+                  </label>
                 </div>
 
                 {error && (
-                  <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+                  <div className="p-3 bg-red-50 border border-red-100 rounded-xl flex items-center gap-2 text-sm text-red-600 animate-in fade-in slide-in-from-top-2">
+                    <span className="block w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0" />
                     {error}
                   </div>
                 )}
 
-                <Button type="submit" className="w-full h-11 rounded-xl">
-                  Iniciar sesion
-                  <ChevronRight className="size-4" />
+                <Button
+                  type="submit"
+                  className="w-full h-11 rounded-xl bg-intenso-teal hover:bg-intenso-teal-600 text-white shadow-lg shadow-intenso-teal/25 transition-all hover:scale-[1.01] active:scale-[0.99]"
+                >
+                  Iniciar sesión
+                  <ChevronRight className="size-4 ml-1 opacity-80" />
                 </Button>
-
-                <p className="text-center text-xs text-intenso-text-muted">
-                  Tus datos estan protegidos. Acceso seguro.
-                </p>
               </form>
 
-              <p className="mt-auto pt-10 text-center text-xs text-intenso-text-muted">
-                No tienes cuenta?{" "}
-                <button
-                  type="button"
-                  className="font-medium text-intenso-teal hover:underline"
-                >
-                  Registrate
-                </button>
-              </p>
+              <div className="mt-8 pt-6 border-t border-gray-100 text-center">
+                <p className="text-xs text-intenso-text-muted">
+                  ¿Aún no tienes cuenta?{" "}
+                  <button
+                    type="button"
+                    className="font-semibold text-intenso-teal hover:text-intenso-teal-700 transition-colors"
+                  >
+                    Regístrate aquí
+                  </button>
+                </p>
+              </div>
             </div>
           </div>
-        </main>
+        </div>
       </div>
     </div>
   );
