@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/app/components/ui/card';
 import { Badge } from '@/app/components/ui/badge';
 import { mockMarcas, mockCreadores, mockCampaigns, mockServicePurchases } from '@/data/mockData';
-import { TrendingUp, TrendingDown, Users, Briefcase, Sparkles, Megaphone, DollarSign, Calendar } from 'lucide-react';
+import { TrendingUp, Briefcase, Sparkles, Megaphone, DollarSign, Calendar } from 'lucide-react';
 
 const AdminMetrics: React.FC = () => {
   // Calcular crecimiento (mock)
@@ -135,7 +135,7 @@ const AdminMetrics: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {monthlyData.map((data, index) => (
+              {monthlyData.map((data) => (
                 <div key={data.month} className="p-4 bg-gray-50 rounded-lg">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">

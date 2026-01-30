@@ -1,10 +1,15 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { User, MarcaProfile, CreadorProfile } from '@/types';
-import { mockMarcas, mockCreadores, mockAdmin } from '@/data/mockData';
+import React, { createContext, useContext, useEffect, useMemo, useState, ReactNode } from "react";
+
+import type { User } from "@/types";
+import { mockMarcas, mockCreadores, mockAdmin } from "@/data/mockData";
+import { safeStorage } from "@/lib/storage";
+
+const AUTH_SESSION_KEY = "intenso.auth.session";
+const AUTH_LOCAL_KEY = "intenso.auth.local";
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => boolean;
+  login: (email: string, password: string, remember?: boolean) => boolean;
   logout: () => void;
   isAuthenticated: boolean;
 }
@@ -26,42 +31,60 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
-  const login = (email: string, password: string): boolean => {
+  useEffect(() => {
+    const localUser = safeStorage.get<User>(AUTH_LOCAL_KEY);
+    const sessionUser = safeStorage.get<User>(AUTH_SESSION_KEY);
+    setUser(localUser ?? sessionUser);
+  }, []);
+
+  const persistUser = (nextUser: User, remember?: boolean) => {
+    safeStorage.remove(AUTH_LOCAL_KEY);
+    safeStorage.remove(AUTH_SESSION_KEY);
+
+    if (remember) {
+      safeStorage.set(AUTH_LOCAL_KEY, nextUser, "local");
+    } else {
+      safeStorage.set(AUTH_SESSION_KEY, nextUser, "session");
+    }
+  };
+
+  const login = React.useCallback((email: string, _password: string, remember?: boolean): boolean => {
     // Buscar admin
     if (mockAdmin.email === email) {
       setUser(mockAdmin);
+      persistUser(mockAdmin, remember);
       return true;
     }
 
     // Buscar en marcas
-    const marca = mockMarcas.find(m => m.email === email);
+    const marca = mockMarcas.find((m) => m.email === email);
     if (marca) {
       setUser(marca);
+      persistUser(marca, remember);
       return true;
     }
 
     // Buscar en creadores
-    const creador = mockCreadores.find(c => c.email === email);
+    const creador = mockCreadores.find((c) => c.email === email);
     if (creador) {
       setUser(creador);
+      persistUser(creador, remember);
       return true;
     }
 
     return false;
-  };
+  }, []);
 
   const logout = () => {
     setUser(null);
+    safeStorage.remove(AUTH_LOCAL_KEY);
+    safeStorage.remove(AUTH_SESSION_KEY);
   };
 
-  return (
-    <AuthContext.Provider value={{ 
-      user, 
-      login, 
-      logout, 
-      isAuthenticated: !!user 
-    }}>
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo(
+    () => ({ user, login, logout, isAuthenticated: Boolean(user) }),
+    [user, login],
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

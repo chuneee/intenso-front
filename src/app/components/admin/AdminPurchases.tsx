@@ -1,26 +1,66 @@
-import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/app/components/ui/card';
-import { Badge } from '@/app/components/ui/badge';
-import { Button } from '@/app/components/ui/button';
-import { Input } from '@/app/components/ui/input';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/app/components/ui/table';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/app/components/ui/select';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/app/components/ui/dialog';
-import { Avatar, AvatarFallback, AvatarImage } from '@/app/components/ui/avatar';
-import { mockServicePurchases, mockMarcas } from '@/data/mockData';
-import { ServicePurchase } from '@/types';
-import { Search, Eye, Calendar, DollarSign, Package, TrendingUp, CheckCircle, Clock } from 'lucide-react';
+import React, { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/app/components/ui/card";
+import { Badge } from "@/app/components/ui/badge";
+import { Button } from "@/app/components/ui/button";
+import { Input } from "@/app/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/app/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/app/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/app/components/ui/dialog";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/app/components/ui/avatar";
+import { mockServicePurchases, mockMarcas } from "@/data/mockData";
+import { ServicePurchase } from "@/types";
+import {
+  Search,
+  Eye,
+  Calendar,
+  DollarSign,
+  Package,
+  TrendingUp,
+  CheckCircle,
+  Clock,
+} from "lucide-react";
 
 const AdminPurchases: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [selectedPurchase, setSelectedPurchase] = useState<ServicePurchase | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter] = useState<string>("all");
+  const [selectedPurchase, setSelectedPurchase] =
+    useState<ServicePurchase | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
 
-  const filteredPurchases = mockServicePurchases.filter(purchase => {
-    const matchesSearch = purchase.serviceName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         purchase.marcaName.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = statusFilter === 'all' || purchase.status === statusFilter;
+  const filteredPurchases = mockServicePurchases.filter((purchase) => {
+    const matchesSearch =
+      purchase.serviceName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      purchase.marcaName.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesStatus =
+      statusFilter === "all" || purchase.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
@@ -31,171 +71,227 @@ const AdminPurchases: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'completado': return 'bg-green-100 text-green-700';
-      case 'en_proceso': return 'bg-blue-100 text-blue-700';
-      case 'pendiente': return 'bg-yellow-100 text-yellow-700';
-      default: return 'bg-gray-100 text-gray-700';
+      case "completado":
+        return "bg-green-100 text-green-700";
+      case "en_progreso":
+        return "bg-blue-100 text-blue-700";
+      case "pendiente":
+        return "bg-yellow-100 text-yellow-700";
+      default:
+        return "bg-gray-100 text-gray-700";
     }
   };
 
   const getStatusLabel = (status: string) => {
     const labels: Record<string, string> = {
-      completado: 'Completado',
-      en_proceso: 'En Proceso',
-      pendiente: 'Pendiente'
+      completado: "Completado",
+      en_progreso: "En Progreso",
+      pendiente: "Pendiente",
     };
     return labels[status] || status;
   };
 
   // Calcular estadísticas
-  const totalRevenue = mockServicePurchases.reduce((sum, p) => sum + p.price, 0);
-  const completedPurchases = mockServicePurchases.filter(p => p.status === 'completado').length;
-  const pendingPurchases = mockServicePurchases.filter(p => p.status === 'pendiente').length;
-  const inProcessPurchases = mockServicePurchases.filter(p => p.status === 'en_proceso').length;
+  const totalRevenue = mockServicePurchases.reduce(
+    (sum, p) => sum + p.price,
+    0,
+  );
+  const completedPurchases = mockServicePurchases.filter(
+    (p) => p.status === "completado",
+  ).length;
+  const pendingPurchases = mockServicePurchases.filter(
+    (p) => p.status === "pendiente",
+  ).length;
+  const inProcessPurchases = mockServicePurchases.filter(
+    (p) => p.status === "en_progreso",
+  ).length;
 
-  const marca = selectedPurchase ? mockMarcas.find(m => m.id === selectedPurchase.marcaId) : null;
+  const marca = selectedPurchase
+    ? mockMarcas.find((m) => m.id === selectedPurchase.marcaId)
+    : null;
 
   // Agrupar compras por servicio
-  const purchasesByService = mockServicePurchases.reduce((acc, purchase) => {
-    acc[purchase.serviceName] = (acc[purchase.serviceName] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
+  /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+  const purchasesByService = mockServicePurchases.reduce(
+    (acc, purchase) => {
+      acc[purchase.serviceName] = (acc[purchase.serviceName] || 0) + 1;
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
 
+  /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
   const topServices = Object.entries(purchasesByService)
     .sort(([, a], [, b]) => b - a)
     .slice(0, 5);
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 bg-gray-50">
+    <div className="p-4 sm:p-6 lg:p-8 animate-in fade-in duration-500">
       <div className="mb-6 sm:mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">Gestión de Compras</h1>
-        <p className="text-slate-600 mt-1 text-sm sm:text-base">Historial de servicios contratados por las marcas</p>
+        <div className="flex items-center gap-2 mb-2">
+          <div className="h-1.5 w-8 rounded-full bg-gradient-to-r from-intenso-orange-500 to-intenso-yellow-500" />
+          <span className="text-xs font-bold tracking-wider text-intenso-text-muted uppercase">
+            Finanzas
+          </span>
+        </div>
+        <h1 className="text-2xl sm:text-3xl font-bold font-display text-intenso-text tracking-tight">
+          Gestión de Compras
+        </h1>
+        <p className="text-intenso-text-muted mt-1 text-sm sm:text-base">
+          Historial de servicios contratados por las marcas
+        </p>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6">
-        <Card className="border-slate-200 shadow-sm">
-          <CardContent className="pt-4 sm:pt-6">
+        <Card className="border-none shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden group">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-emerald-500 opacity-80" />
+          <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-xl sm:text-2xl font-bold text-slate-900">
+                <div className="text-3xl sm:text-4xl font-bold font-display text-intenso-text tracking-tight">
                   ${totalRevenue.toLocaleString()}
                 </div>
-                <p className="text-xs sm:text-sm text-slate-600 mt-1">Ingresos Totales</p>
+                <p className="text-xs sm:text-sm font-medium text-intenso-text-muted mt-1 uppercase tracking-wide">
+                  Ingresos Totales
+                </p>
               </div>
-              <DollarSign className="w-8 h-8 sm:w-10 sm:h-10 text-green-600 opacity-20" />
+              <DollarSign className="w-8 h-8 sm:w-10 sm:h-10 text-emerald-500 opacity-20" />
             </div>
           </CardContent>
         </Card>
-        <Card className="border-slate-200 shadow-sm">
-          <CardContent className="pt-4 sm:pt-6">
+        <Card className="border-none shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden group">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-blue-600 opacity-80" />
+          <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-xl sm:text-2xl font-bold text-slate-900">{completedPurchases}</div>
-                <p className="text-xs sm:text-sm text-slate-600 mt-1">Completados</p>
+                <div className="text-3xl sm:text-4xl font-bold font-display text-intenso-text">
+                  {completedPurchases}
+                </div>
+                <p className="text-xs sm:text-sm font-medium text-intenso-text-muted mt-1 uppercase tracking-wide">
+                  Completados
+                </p>
               </div>
-              <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-green-600 opacity-20" />
+              <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-blue-500 opacity-20" />
             </div>
           </CardContent>
         </Card>
-        <Card className="border-slate-200 shadow-sm">
-          <CardContent className="pt-4 sm:pt-6">
+        <Card className="border-none shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden group">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-intenso-yellow-500 to-intenso-orange-500 opacity-80" />
+          <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-xl sm:text-2xl font-bold text-slate-900">{inProcessPurchases}</div>
-                <p className="text-xs sm:text-sm text-slate-600 mt-1">En Proceso</p>
+                <div className="text-3xl sm:text-4xl font-bold font-display text-intenso-text">
+                  {pendingPurchases}
+                </div>
+                <p className="text-xs sm:text-sm font-medium text-intenso-text-muted mt-1 uppercase tracking-wide">
+                  Pendientes
+                </p>
               </div>
-              <Clock className="w-8 h-8 sm:w-10 sm:h-10 text-blue-600 opacity-20" />
+              <Clock className="w-8 h-8 sm:w-10 sm:h-10 text-intenso-orange-500 opacity-20" />
             </div>
           </CardContent>
         </Card>
-        <Card className="border-slate-200 shadow-sm">
-          <CardContent className="pt-4 sm:pt-6">
+        <Card className="border-none shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden group">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-intenso-teal-500 to-intenso-teal-600 opacity-80" />
+          <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-xl sm:text-2xl font-bold text-slate-900">{pendingPurchases}</div>
-                <p className="text-xs sm:text-sm text-slate-600 mt-1">Pendientes</p>
+                <div className="text-3xl sm:text-4xl font-bold font-display text-intenso-text">
+                  {inProcessPurchases}
+                </div>
+                <p className="text-xs sm:text-sm font-medium text-intenso-text-muted mt-1 uppercase tracking-wide">
+                  En Proceso
+                </p>
               </div>
-              <Package className="w-8 h-8 sm:w-10 sm:h-10 text-yellow-600 opacity-20" />
+              <TrendingUp className="w-8 h-8 sm:w-10 sm:h-10 text-intenso-teal-500 opacity-20" />
             </div>
           </CardContent>
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-4 sm:mb-6">
-        {/* Main Content - 2/3 width */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Filters */}
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex gap-4">
-                <div className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                  <Input
-                    placeholder="Buscar por servicio o marca..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10"
-                  />
-                </div>
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-56">
-                    <SelectValue placeholder="Estado" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Todos los estados</SelectItem>
-                    <SelectItem value="completado">Completados</SelectItem>
-                    <SelectItem value="en_proceso">En Proceso</SelectItem>
-                    <SelectItem value="pendiente">Pendientes</SelectItem>
-                  </SelectContent>
-                </Select>
+      {/* Table */}
+      <Card className="border-none shadow-sm overflow-hidden">
+        <CardHeader className="border-b border-gray-100/50 pb-4">
+          <div className="flex flex-col sm:flex-row gap-4 justify-between items-center">
+            <CardTitle className=" text-intenso-text text-base sm:text-lg font-display">
+              Historial de Transacciones
+            </CardTitle>
+            <div className="flex gap-2 w-full sm:w-auto">
+              <div className="relative flex-1 sm:w-64">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-intenso-text-muted w-4 h-4" />
+                <Input
+                  placeholder="Buscar servicio o marca..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 border-gray-200 h-9"
+                />
               </div>
-            </CardContent>
-          </Card>
-
-          {/* Table */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Historial de Compras ({filteredPurchases.length})</CardTitle>
-            </CardHeader>
-            <CardContent>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="p-0">
+          <div className="overflow-x-auto">
+            <div className="inline-block min-w-full align-middle">
               <Table>
                 <TableHeader>
-                  <TableRow>
-                    <TableHead>Servicio</TableHead>
-                    <TableHead>Marca</TableHead>
-                    <TableHead>Fecha</TableHead>
-                    <TableHead>Monto</TableHead>
-                    <TableHead>Estado</TableHead>
-                    <TableHead className="text-right">Acciones</TableHead>
+                  <TableRow className="border-gray-100 hover:bg-transparent">
+                    <TableHead className="text-intenso-text-muted font-medium">
+                      Servicio
+                    </TableHead>
+                    <TableHead className="text-intenso-text-muted font-medium">
+                      Marca
+                    </TableHead>
+                    <TableHead className="text-intenso-text-muted font-medium">
+                      Precio
+                    </TableHead>
+                    <TableHead className="text-intenso-text-muted font-medium">
+                      Fecha
+                    </TableHead>
+                    <TableHead className="text-intenso-text-muted font-medium">
+                      Estado
+                    </TableHead>
+                    <TableHead className="text-right text-intenso-text-muted font-medium">
+                      Acciones
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {filteredPurchases.map((purchase) => (
-                    <TableRow key={purchase.id}>
-                      <TableCell>
-                        <div className="font-semibold text-gray-900">{purchase.serviceName}</div>
+                    <TableRow
+                      key={purchase.id}
+                      className="border-gray-100 hover:bg-gray-50/50 transition-colors"
+                    >
+                      <TableCell className="font-medium text-intenso-text">
+                        <div className="flex items-center gap-2">
+                          <Package className="w-4 h-4 text-intenso-text-muted" />
+                          {purchase.serviceName}
+                        </div>
                       </TableCell>
-                      <TableCell className="text-sm">{purchase.marcaName}</TableCell>
-                      <TableCell className="text-sm text-gray-600">
-                        {new Date(purchase.purchaseDate).toLocaleDateString('es-ES', {
-                          day: 'numeric',
-                          month: 'short',
-                          year: 'numeric'
-                        })}
+                      <TableCell className="text-intenso-text">
+                        {purchase.marcaName}
+                      </TableCell>
+                      <TableCell className="font-bold text-intenso-text">
+                        ${purchase.price.toLocaleString()}
+                      </TableCell>
+                      <TableCell className="text-intenso-text-muted">
+                        {new Date(purchase.purchaseDate).toLocaleDateString()}
                       </TableCell>
                       <TableCell>
-                        <span className="font-semibold text-gray-900">
-                          ${purchase.price.toLocaleString()}
-                        </span>
-                      </TableCell>
-                      <TableCell>
-                        <Badge className={getStatusColor(purchase.status)}>
+                        <Badge
+                          variant="secondary"
+                          className={`${getStatusColor(purchase.status)} border-0 font-medium`}
+                        >
                           {getStatusLabel(purchase.status)}
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right">
-                        <Button variant="ghost" size="sm" onClick={() => viewDetails(purchase)}>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => viewDetails(purchase)}
+                          className="hover:text-intenso-teal-600 hover:bg-intenso-teal-50"
+                        >
                           <Eye className="w-4 h-4" />
                         </Button>
                       </TableCell>
@@ -203,74 +299,10 @@ const AdminPurchases: React.FC = () => {
                   ))}
                 </TableBody>
               </Table>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Sidebar - 1/3 width */}
-        <div className="space-y-6">
-          {/* Top Services */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Servicios Más Vendidos</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {topServices.map(([serviceName, count], index) => (
-                  <div key={serviceName} className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                        index === 0 ? 'bg-purple-100' : 
-                        index === 1 ? 'bg-blue-100' : 
-                        index === 2 ? 'bg-green-100' : 'bg-gray-100'
-                      }`}>
-                        <span className={`text-sm font-semibold ${
-                          index === 0 ? 'text-purple-600' : 
-                          index === 1 ? 'text-blue-600' : 
-                          index === 2 ? 'text-green-600' : 'text-gray-600'
-                        }`}>
-                          {index + 1}
-                        </span>
-                      </div>
-                      <span className="text-sm text-gray-700 line-clamp-1">{serviceName}</span>
-                    </div>
-                    <Badge variant="secondary">{count}</Badge>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Revenue by Month (Mock) */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Ingresos Mensuales</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Enero 2024</span>
-                  <span className="font-semibold">$12,500</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Febrero 2024</span>
-                  <span className="font-semibold">$18,200</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Marzo 2024</span>
-                  <span className="font-semibold text-green-600">$25,800</span>
-                </div>
-                <div className="pt-3 border-t">
-                  <div className="flex items-center gap-2">
-                    <TrendingUp className="w-5 h-5 text-green-600" />
-                    <span className="text-sm text-green-600 font-medium">+42% vs mes anterior</span>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Detail Dialog */}
       <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
@@ -280,9 +312,13 @@ const AdminPurchases: React.FC = () => {
               <DialogHeader>
                 <div className="flex items-start justify-between">
                   <div>
-                    <DialogTitle className="text-2xl">{selectedPurchase.serviceName}</DialogTitle>
+                    <DialogTitle className="text-2xl">
+                      {selectedPurchase.serviceName}
+                    </DialogTitle>
                     <DialogDescription className="mt-2">
-                      <Badge className={getStatusColor(selectedPurchase.status)}>
+                      <Badge
+                        className={getStatusColor(selectedPurchase.status)}
+                      >
                         {getStatusLabel(selectedPurchase.status)}
                       </Badge>
                     </DialogDescription>
@@ -299,27 +335,39 @@ const AdminPurchases: React.FC = () => {
               <div className="space-y-6 py-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <h4 className="text-sm font-semibold text-gray-600 mb-2">Marca</h4>
+                    <h4 className="text-sm font-semibold text-gray-600 mb-2">
+                      Marca
+                    </h4>
                     <div className="flex items-center gap-2">
                       <Avatar className="w-10 h-10">
                         <AvatarImage src={marca?.avatar} />
-                        <AvatarFallback>{marca?.companyName?.charAt(0)}</AvatarFallback>
+                        <AvatarFallback>
+                          {marca?.companyName?.charAt(0)}
+                        </AvatarFallback>
                       </Avatar>
                       <div>
-                        <p className="font-medium text-gray-900">{selectedPurchase.marcaName}</p>
-                        <p className="text-sm text-gray-500">{marca?.industry}</p>
+                        <p className="font-medium text-gray-900">
+                          {selectedPurchase.marcaName}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          {marca?.industry}
+                        </p>
                       </div>
                     </div>
                   </div>
                   <div>
-                    <h4 className="text-sm font-semibold text-gray-600 mb-2">Fecha de Compra</h4>
+                    <h4 className="text-sm font-semibold text-gray-600 mb-2">
+                      Fecha de Compra
+                    </h4>
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4 text-gray-400" />
                       <p className="text-gray-900">
-                        {new Date(selectedPurchase.purchaseDate).toLocaleDateString('es-ES', {
-                          day: 'numeric',
-                          month: 'long',
-                          year: 'numeric'
+                        {new Date(
+                          selectedPurchase.purchaseDate,
+                        ).toLocaleDateString("es-ES", {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
                         })}
                       </p>
                     </div>
@@ -327,9 +375,12 @@ const AdminPurchases: React.FC = () => {
                 </div>
 
                 <div>
-                  <h4 className="text-sm font-semibold text-gray-600 mb-2">Descripción del Servicio</h4>
+                  <h4 className="text-sm font-semibold text-gray-600 mb-2">
+                    Descripción del Servicio
+                  </h4>
                   <p className="text-gray-700 text-sm">
-                    {selectedPurchase.serviceDescription || 'Servicio contratado para optimizar la presencia digital de la marca.'}
+                    Servicio contratado para optimizar la presencia digital de
+                    la marca.
                   </p>
                 </div>
 
@@ -341,7 +392,7 @@ const AdminPurchases: React.FC = () => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="pendiente">Pendiente</SelectItem>
-                        <SelectItem value="en_proceso">En Proceso</SelectItem>
+                        <SelectItem value="en_progreso">En Progreso</SelectItem>
                         <SelectItem value="completado">Completado</SelectItem>
                       </SelectContent>
                     </Select>

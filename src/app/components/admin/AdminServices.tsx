@@ -1,24 +1,40 @@
-import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/app/components/ui/card';
-import { Badge } from '@/app/components/ui/badge';
-import { Button } from '@/app/components/ui/button';
-import { Input } from '@/app/components/ui/input';
-import { Label } from '@/app/components/ui/label';
-import { Textarea } from '@/app/components/ui/textarea';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from '@/app/components/ui/dialog';
-import { mockServices } from '@/data/mockData';
-import { Service } from '@/types';
-import { Edit, Plus, Power, DollarSign, Package, TrendingUp } from 'lucide-react';
+import React, { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/app/components/ui/card";
+import { Badge } from "@/app/components/ui/badge";
+import { Button } from "@/app/components/ui/button";
+import { Input } from "@/app/components/ui/input";
+import { Label } from "@/app/components/ui/label";
+import { Textarea } from "@/app/components/ui/textarea";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/app/components/ui/dialog";
+import { mockServices } from "@/data/mockData";
+import { Service } from "@/types";
+import { Edit, Plus, Power, DollarSign } from "lucide-react";
+
+type ServiceStatus = "active" | "inactive";
+
+type ServiceWithStatus = Service & { status: ServiceStatus };
 
 const AdminServices: React.FC = () => {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [, setSelectedService] = useState<Service | null>(null);
   const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    price: '',
-    features: ['']
+    name: "",
+    description: "",
+    price: "",
+    features: [""],
   });
 
   const openEditDialog = (service: Service) => {
@@ -27,64 +43,82 @@ const AdminServices: React.FC = () => {
       name: service.name,
       description: service.description,
       price: service.price.toString(),
-      features: service.features
+      features: service.features,
     });
     setIsEditOpen(true);
   };
 
   const openCreateDialog = () => {
     setFormData({
-      name: '',
-      description: '',
-      price: '',
-      features: ['']
+      name: "",
+      description: "",
+      price: "",
+      features: [""],
     });
     setIsCreateOpen(true);
   };
 
   const addFeature = () => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      features: [...prev.features, '']
+      features: [...prev.features, ""],
     }));
   };
 
   const updateFeature = (index: number, value: string) => {
     const newFeatures = [...formData.features];
     newFeatures[index] = value;
-    setFormData(prev => ({ ...prev, features: newFeatures }));
+    setFormData((prev) => ({ ...prev, features: newFeatures }));
   };
 
   const removeFeature = (index: number) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      features: prev.features.filter((_, i) => i !== index)
+      features: prev.features.filter((_, i) => i !== index),
     }));
   };
 
   const getIconForService = (name: string) => {
-    if (name.includes('Estrategia') || name.includes('Consultoría')) return '📊';
-    if (name.includes('Diseño')) return '🎨';
-    if (name.includes('Video')) return '🎥';
-    if (name.includes('Community')) return '💬';
-    if (name.includes('Publicidad') || name.includes('Ads')) return '📢';
-    return '📦';
+    if (name.includes("Estrategia") || name.includes("Consultoría"))
+      return "📊";
+    if (name.includes("Diseño")) return "🎨";
+    if (name.includes("Video")) return "🎥";
+    if (name.includes("Community")) return "💬";
+    if (name.includes("Publicidad") || name.includes("Ads")) return "📢";
+    return "📦";
   };
 
   // Calcular estadísticas
-  const totalServices = mockServices.length;
-  const activeServices = mockServices.filter(s => s.status === 'active').length;
-  const avgPrice = Math.round(mockServices.reduce((sum, s) => sum + s.price, 0) / mockServices.length);
+  const services = mockServices as ServiceWithStatus[];
+
+  const totalServices = services.length;
+  const activeServices = services.filter((s) => s.status === "active").length;
+  const avgPrice = Math.round(
+    services.reduce((sum, s) => sum + s.price, 0) / services.length,
+  );
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 bg-gray-50">
+    <div className="p-4 sm:p-6 lg:p-8 animate-in fade-in duration-500">
       <div className="mb-6 sm:mb-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">Gestión de Servicios</h1>
-            <p className="text-slate-600 mt-1 text-sm sm:text-base">Administra los servicios digitales de la agencia</p>
+            <div className="flex items-center gap-2 mb-2">
+              <div className="h-1.5 w-8 rounded-full bg-gradient-to-r from-intenso-teal-500 to-emerald-500" />
+              <span className="text-xs font-bold tracking-wider text-intenso-text-muted uppercase">
+                Catálogo
+              </span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-bold font-display text-intenso-text tracking-tight">
+              Gestión de Servicios
+            </h1>
+            <p className="text-intenso-text-muted mt-1 text-sm sm:text-base">
+              Administra los servicios digitales de la agencia
+            </p>
           </div>
-          <Button onClick={openCreateDialog} className="bg-slate-900 hover:bg-slate-800 w-full sm:w-auto">
+          <Button
+            onClick={openCreateDialog}
+            className="bg-intenso-black hover:bg-gray-800 w-full sm:w-auto text-white"
+          >
             <Plus className="w-4 h-4 mr-2" />
             Crear Servicio
           </Button>
@@ -92,131 +126,129 @@ const AdminServices: React.FC = () => {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
-        <Card className="border-slate-200 shadow-sm">
-          <CardContent className="pt-4 sm:pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="text-xl sm:text-2xl font-bold text-slate-900">{totalServices}</div>
-                <p className="text-xs sm:text-sm text-slate-600 mt-1">Servicios Totales</p>
-              </div>
-              <Package className="w-8 h-8 sm:w-10 sm:h-10 text-purple-600 opacity-20" />
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <Card className="border-none shadow-sm relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-intenso-teal-500 to-intenso-teal-600 opacity-80" />
+          <CardContent className="pt-6">
+            <div className="text-3xl font-bold font-display text-intenso-text">
+              {totalServices}
             </div>
+            <p className="text-xs uppercase tracking-wider text-intenso-text-muted font-medium mt-1">
+              Total Servicios
+            </p>
           </CardContent>
         </Card>
-        <Card className="border-slate-200 shadow-sm">
-          <CardContent className="pt-4 sm:pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="text-xl sm:text-2xl font-bold text-slate-900">{activeServices}</div>
-                <p className="text-xs sm:text-sm text-slate-600 mt-1">Servicios Activos</p>
-              </div>
-              <Power className="w-8 h-8 sm:w-10 sm:h-10 text-green-600 opacity-20" />
+        <Card className="border-none shadow-sm relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-emerald-500 opacity-80" />
+          <CardContent className="pt-6">
+            <div className="text-3xl font-bold font-display text-intenso-text">
+              {activeServices}
             </div>
+            <p className="text-xs uppercase tracking-wider text-intenso-text-muted font-medium mt-1">
+              Activos
+            </p>
           </CardContent>
         </Card>
-        <Card className="border-slate-200 shadow-sm sm:col-span-3 lg:col-span-1">
-          <CardContent className="pt-4 sm:pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="text-xl sm:text-2xl font-bold text-slate-900">${avgPrice.toLocaleString()}</div>
-                <p className="text-xs sm:text-sm text-slate-600 mt-1">Precio Promedio</p>
-              </div>
-              <TrendingUp className="w-8 h-8 sm:w-10 sm:h-10 text-blue-600 opacity-20" />
+        <Card className="border-none shadow-sm relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-intenso-purple-500 to-intenso-purple-600 opacity-80" />
+          <CardContent className="pt-6">
+            <div className="text-3xl font-bold font-display text-intenso-text">
+              ${avgPrice.toLocaleString()}
             </div>
+            <p className="text-xs uppercase tracking-wider text-intenso-text-muted font-medium mt-1">
+              Precio Promedio
+            </p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Services Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
-        {mockServices.map((service) => (
-          <Card key={service.id} className="border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="text-4xl">{getIconForService(service.name)}</div>
-                  <div>
-                    <CardTitle className="text-lg">{service.name}</CardTitle>
-                    <Badge 
-                      className={service.status === 'active' 
-                        ? 'bg-green-100 text-green-700 mt-2' 
-                        : 'bg-gray-100 text-gray-700 mt-2'}
-                    >
-                      {service.status === 'active' ? 'Activo' : 'Inactivo'}
-                    </Badge>
-                  </div>
-                </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {services.map((service) => (
+          <Card
+            key={service.id}
+            className="border-none shadow-sm hover:shadow-md transition-all duration-300 group overflow-hidden flex flex-col h-full"
+          >
+            <CardHeader className="pb-4 relative">
+              <div className="absolute right-4 top-4 opacity-10 group-hover:opacity-20 transition-opacity text-4xl grayscale group-hover:grayscale-0">
+                {getIconForService(service.name)}
               </div>
+              <div className="flex justify-between items-start">
+                <Badge
+                  variant="outline"
+                  className={`mb-2 font-normal border-0 ${service.status === "active" ? "bg-green-50 text-green-700" : "bg-gray-100 text-gray-500"}`}
+                >
+                  {service.status === "active" ? "Activo" : "Inactivo"}
+                </Badge>
+              </div>
+              <CardTitle className="text-xl text-intenso-text font-display pr-8 leading-tight">
+                {service.name}
+              </CardTitle>
             </CardHeader>
-            <CardContent>
-              <CardDescription className="mb-4 min-h-[3rem]">
+            <CardContent className="pb-4 flex-grow">
+              <div className="text-2xl font-bold text-intenso-text mb-3 tracking-tight">
+                ${service.price.toLocaleString()}
+              </div>
+              <p className="text-sm text-intenso-text-muted mb-4 line-clamp-2">
                 {service.description}
-              </CardDescription>
-
-              <div className="mb-4">
-                <div className="flex items-baseline gap-1 mb-2">
-                  <span className="text-3xl font-bold text-gray-900">
-                    ${service.price.toLocaleString()}
-                  </span>
-                  <span className="text-sm text-gray-500">USD</span>
-                </div>
+              </p>
+              <div className="space-y-1">
+                {service.features.slice(0, 3).map((feature, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center text-xs text-intenso-text-muted"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-intenso-teal-400 mr-2" />
+                    <span className="truncate">{feature}</span>
+                  </div>
+                ))}
+                {service.features.length > 3 && (
+                  <div className="text-xs text-intenso-text-muted pl-3.5 pt-1 italic">
+                    +{service.features.length - 3} características más
+                  </div>
+                )}
               </div>
-
-              <div className="space-y-2 mb-4">
-                <p className="text-sm font-semibold text-gray-700">Incluye:</p>
-                <ul className="space-y-1">
-                  {service.features.slice(0, 3).map((feature, index) => (
-                    <li key={index} className="text-sm text-gray-600 flex items-start gap-2">
-                      <span className="text-green-600 mt-0.5">✓</span>
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                  {service.features.length > 3 && (
-                    <li className="text-sm text-gray-500">
-                      +{service.features.length - 3} más...
-                    </li>
-                  )}
-                </ul>
-              </div>
-
-              <div className="flex gap-2 pt-4 border-t">
-                <Button 
-                  variant="outline" 
-                  className="flex-1"
+            </CardContent>
+            <div className="p-6 pt-0 mt-auto">
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  className="flex-1 border-gray-200 text-intenso-text hover:bg-gray-50 hover:text-intenso-purple-600"
                   onClick={() => openEditDialog(service)}
                 >
                   <Edit className="w-4 h-4 mr-2" />
                   Editar
                 </Button>
-                <Button 
-                  variant="outline" 
-                  className={service.status === 'active' ? 'text-red-600' : 'text-green-600'}
+                <Button
+                  variant="ghost"
+                  className="px-3 hover:bg-red-50 hover:text-red-600 text-intenso-text-muted"
                 >
                   <Power className="w-4 h-4" />
                 </Button>
               </div>
-            </CardContent>
+            </div>
           </Card>
         ))}
       </div>
 
       {/* Create/Edit Dialog */}
-      <Dialog open={isCreateOpen || isEditOpen} onOpenChange={(open) => {
-        if (!open) {
-          setIsCreateOpen(false);
-          setIsEditOpen(false);
-        }
-      }}>
+      <Dialog
+        open={isCreateOpen || isEditOpen}
+        onOpenChange={(open) => {
+          if (!open) {
+            setIsCreateOpen(false);
+            setIsEditOpen(false);
+          }
+        }}
+      >
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
-              {isCreateOpen ? 'Crear Nuevo Servicio' : 'Editar Servicio'}
+              {isCreateOpen ? "Crear Nuevo Servicio" : "Editar Servicio"}
             </DialogTitle>
             <DialogDescription>
-              {isCreateOpen 
-                ? 'Completa la información del nuevo servicio digital' 
-                : 'Modifica los detalles del servicio'}
+              {isCreateOpen
+                ? "Completa la información del nuevo servicio digital"
+                : "Modifica los detalles del servicio"}
             </DialogDescription>
           </DialogHeader>
 
@@ -227,7 +259,9 @@ const AdminServices: React.FC = () => {
                 id="name"
                 placeholder="Ej: Estrategia de Contenido"
                 value={formData.name}
-                onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, name: e.target.value }))
+                }
               />
             </div>
 
@@ -237,7 +271,12 @@ const AdminServices: React.FC = () => {
                 id="description"
                 placeholder="Describe el servicio..."
                 value={formData.description}
-                onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    description: e.target.value,
+                  }))
+                }
                 rows={3}
               />
             </div>
@@ -251,7 +290,9 @@ const AdminServices: React.FC = () => {
                   type="number"
                   placeholder="0"
                   value={formData.price}
-                  onChange={(e) => setFormData(prev => ({ ...prev, price: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, price: e.target.value }))
+                  }
                   className="pl-10"
                 />
               </div>
@@ -260,7 +301,12 @@ const AdminServices: React.FC = () => {
             <div>
               <div className="flex items-center justify-between mb-2">
                 <Label>Características / Incluye</Label>
-                <Button type="button" variant="outline" size="sm" onClick={addFeature}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={addFeature}
+                >
                   <Plus className="w-4 h-4 mr-1" />
                   Agregar
                 </Button>
@@ -274,9 +320,9 @@ const AdminServices: React.FC = () => {
                       onChange={(e) => updateFeature(index, e.target.value)}
                     />
                     {formData.features.length > 1 && (
-                      <Button 
-                        type="button" 
-                        variant="outline" 
+                      <Button
+                        type="button"
+                        variant="outline"
                         size="sm"
                         onClick={() => removeFeature(index)}
                         className="text-red-600"
@@ -291,14 +337,17 @@ const AdminServices: React.FC = () => {
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => {
-              setIsCreateOpen(false);
-              setIsEditOpen(false);
-            }}>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setIsCreateOpen(false);
+                setIsEditOpen(false);
+              }}
+            >
               Cancelar
             </Button>
             <Button>
-              {isCreateOpen ? 'Crear Servicio' : 'Guardar Cambios'}
+              {isCreateOpen ? "Crear Servicio" : "Guardar Cambios"}
             </Button>
           </DialogFooter>
         </DialogContent>

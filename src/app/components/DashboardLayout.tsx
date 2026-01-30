@@ -1,161 +1,323 @@
-import React, { ReactNode, useState } from 'react';
-import { useAuth } from '@/context/AuthContext';
-import { Button } from '@/app/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/app/components/ui/avatar';
-import { 
-  LayoutDashboard, 
-  Users, 
-  Megaphone, 
-  ShoppingBag, 
+import React, { useMemo, useState } from "react";
+import { NavLink, Outlet, useNavigate, useLocation } from "react-router-dom";
+
+import { useAuth } from "@/context/AuthContext";
+import { paths } from "@/routes/paths";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/app/components/ui/avatar";
+import {
+  LayoutDashboard,
+  Users,
+  Megaphone,
+  ShoppingBag,
   LogOut,
-  Sparkles,
-  Shield,
   Briefcase,
   BarChart3,
-  Settings,
   Menu,
-  X
-} from 'lucide-react';
+  X,
+  Bell,
+  Search,
+  Settings,
+} from "lucide-react";
 
-interface DashboardLayoutProps {
-  children: ReactNode;
-  currentPage: string;
-  onNavigate: (page: string) => void;
-}
+type NavItem = {
+  name: string;
+  icon: React.ComponentType<{ className?: string }>;
+  to: string;
+};
 
-const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children, currentPage, onNavigate }) => {
+const DashboardLayout: React.FC = () => {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const homePath =
+    user?.type === "admin"
+      ? paths.admin.root
+      : user?.type === "marca"
+        ? paths.marca.root
+        : paths.creador.root;
+
+  // Determine user role colors/gradients
+  /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+  const roleTheme = useMemo(() => {
+    switch (user?.type) {
+      case "admin":
+        return {
+          gradient: "from-[#2A213B] via-[#431B69] to-[#8A3BC0]", // Deep Purple Admin
+          accent: "text-intenso-purple",
+          dot: "bg-intenso-purple",
+          bg: "bg-[#2A213B]",
+        };
+      case "marca":
+        return {
+          gradient: "from-[#052e2e] via-[#0E8D8D] to-[#14b6b6]", // Teal Brand
+          accent: "text-intenso-teal",
+          dot: "bg-intenso-teal",
+          bg: "bg-[#052e2e]",
+        };
+      case "creador":
+        return {
+          gradient: "from-[#332400] via-[#c27a00] to-[#FABA5F]", // Orange Creator
+          accent: "text-intenso-orange",
+          dot: "bg-intenso-orange",
+          bg: "bg-[#332400]",
+        };
+      default:
+        return {
+          gradient: "from-gray-900 to-gray-800",
+          accent: "text-gray-900",
+          dot: "bg-gray-500",
+          bg: "bg-gray-900",
+        };
+    }
+  }, [user?.type]);
+
+  const navigation: NavItem[] = useMemo(() => {
+    if (!user) return [];
+
+    if (user.type === "admin") {
+      return [
+        { name: "Dashboard", icon: LayoutDashboard, to: paths.admin.root },
+        { name: "Marcas", icon: Briefcase, to: paths.admin.marcas },
+        { name: "Creadores", icon: Users, to: paths.admin.creadores },
+        { name: "Campañas", icon: Megaphone, to: paths.admin.campaigns },
+        { name: "Servicios", icon: ShoppingBag, to: paths.admin.services },
+        { name: "Compras", icon: BarChart3, to: paths.admin.purchases },
+        //{ name: "Métricas", icon: BarChart3, to: paths.admin.metrics },
+      ];
+    }
+
+    if (user.type === "marca") {
+      return [
+        { name: "Dashboard", icon: LayoutDashboard, to: paths.marca.root },
+        { name: "Campañas", icon: Megaphone, to: paths.marca.campaigns },
+        { name: "Creadores", icon: Users, to: paths.marca.creators },
+        { name: "Servicios", icon: ShoppingBag, to: paths.marca.services },
+      ];
+    }
+
+    return [
+      { name: "Dashboard", icon: LayoutDashboard, to: paths.creador.root },
+      { name: "Mis Campañas", icon: Megaphone, to: paths.creador.campaigns },
+      { name: "Marcas", icon: Users, to: paths.creador.brands },
+    ];
+  }, [user]);
 
   if (!user) return null;
 
-  const isMarca = user.type === 'marca';
-  const isAdmin = user.type === 'admin';
-
-  const navigation = isAdmin ? [
-    { name: 'Dashboard', icon: LayoutDashboard, page: 'dashboard' },
-    { name: 'Marcas', icon: Briefcase, page: 'admin-marcas' },
-    { name: 'Creadores', icon: Users, page: 'admin-creadores' },
-    { name: 'Campañas', icon: Megaphone, page: 'admin-campaigns' },
-    { name: 'Servicios', icon: ShoppingBag, page: 'admin-services' },
-    { name: 'Compras', icon: BarChart3, page: 'admin-purchases' },
-    { name: 'Métricas', icon: BarChart3, page: 'admin-metrics' },
-  ] : isMarca ? [
-    { name: 'Dashboard', icon: LayoutDashboard, page: 'dashboard' },
-    { name: 'Campañas', icon: Megaphone, page: 'campaigns' },
-    { name: 'Creadores', icon: Users, page: 'creators' },
-    { name: 'Servicios', icon: ShoppingBag, page: 'services' }
-  ] : [
-    { name: 'Dashboard', icon: LayoutDashboard, page: 'dashboard' },
-    { name: 'Mis Campañas', icon: Megaphone, page: 'campaigns' },
-    { name: 'Marcas', icon: Users, page: 'brands' }
-  ];
-
-  const handleNavigate = (page: string) => {
-    onNavigate(page);
-    setIsMobileMenuOpen(false);
+  const handleLogout = () => {
+    logout();
+    navigate(paths.login, { replace: true });
   };
 
+  const currentPathName =
+    navigation.find((item) => location.pathname.startsWith(item.to))?.name ||
+    "Dashboard";
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div
+      className={`flex h-screen w-full overflow-hidden bg-gradient-to-br from-intenso-purple via-[#B447CC] to-[#F15BA6] relative font-sans`}
+    >
+      {/* Dynamic Background Elements */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-white/10 blur-[100px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-[#FAFAFA]/10 blur-[100px]" />
+        <div
+          className="absolute inset-0 opacity-[0.05] bg-[url('/img/isotipo.png')] bg-repeat space mix-blend-overlay"
+          style={{ backgroundSize: "200px" }}
+        />
+      </div>
+
       {/* Mobile Header */}
-      <header className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-slate-200 z-50 flex items-center justify-between px-4">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center">
-            <Sparkles className="w-4 h-4 text-white" />
-          </div>
-          <span className="font-bold text-lg text-slate-900">
-            CreatorHub
+      <header className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white/10 backdrop-blur-md border-b border-white/10 z-50 flex items-center justify-between px-4">
+        <div className="flex items-center gap-3">
+          <img
+            src="/img/isotipo.png"
+            alt="logo"
+            className="h-8 w-8 brightness-0 invert"
+          />
+          <span className="font-display font-bold text-xl text-white">
+            intenso
           </span>
         </div>
+
         <button
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+          type="button"
+          onClick={() => setIsMobileMenuOpen((v) => !v)}
+          className="p-2 text-white hover:bg-white/10 rounded-xl transition-colors"
         >
-          {isMobileMenuOpen ? (
-            <X className="w-6 h-6 text-slate-900" />
-          ) : (
-            <Menu className="w-6 h-6 text-slate-900" />
-          )}
+          {isMobileMenuOpen ? <X /> : <Menu />}
         </button>
       </header>
 
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div 
-          className="lg:hidden fixed inset-0 bg-black/50 z-40"
+        <div
+          className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
 
-      {/* Sidebar */}
-      <aside className={`
-        fixed top-0 h-full w-64 bg-white border-r border-slate-200 flex flex-col z-50 transition-transform duration-300
-        ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
-        lg:translate-x-0 lg:left-0
-      `}>
-        {/* Logo */}
-        <div className="p-6 border-b border-slate-200">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-white" />
+      {/* Sidebar - Desktop & Mobile */}
+      <aside
+        className={`
+          fixed lg:static top-0 left-0 h-full w-72 z-50 transition-transform duration-300 ease-out
+          ${isMobileMenuOpen ? "translate-x-0 bg-[#2A1B45]" : "-translate-x-full"}
+          lg:translate-x-0 lg:bg-transparent lg:w-72 lg:flex-shrink-0
+          flex flex-col p-6
+        `}
+      >
+        {/* Brand Logo */}
+        <div className="h-20 flex items-center mb-6 pl-2">
+          <button
+            onClick={() => navigate(homePath)}
+            className="flex items-center gap-3 group"
+          >
+            <div className="relative">
+              <img
+                src="/img/isotipo.png"
+                className="w-10 h-10 object-contain brightness-0 invert shadow-lg transition-transform group-hover:scale-110"
+                alt="logo"
+              />
+              <div className="absolute inset-0 bg-white/30 blur-lg rounded-full opacity-0 group-hover:opacity-50 transition-opacity" />
             </div>
-            <span className="font-bold text-xl text-slate-900">
-              CreatorHub
+            <span className="font-display font-bold text-3xl text-white tracking-tight">
+              intenso
             </span>
-          </div>
+          </button>
         </div>
 
-        {/* Navigation */}
-        <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+        {/* Navigation Items */}
+        <nav className="flex-1 space-y-2 overflow-y-auto scrollbar-hide">
           {navigation.map((item) => {
             const Icon = item.icon;
-            const isActive = currentPage === item.page;
+            // Check if active (exact match for root, or starts with for others)
+            const isActive =
+              item.to === homePath
+                ? location.pathname === homePath
+                : location.pathname.startsWith(item.to);
+
             return (
-              <button
-                key={item.page}
-                onClick={() => handleNavigate(item.page)}
-                className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all font-medium text-sm ${
-                  isActive 
-                    ? 'bg-slate-100 text-slate-900' 
-                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-                }`}
+              <NavLink
+                key={item.to}
+                to={item.to}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`
+                  relative flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300 group
+                  ${
+                    isActive
+                      ? "bg-white shadow-[0_8px_20px_-6px_rgba(0,0,0,0.2)] text-intenso-purple font-bold translate-x-2"
+                      : "text-white/70 hover:bg-white/10 hover:text-white"
+                  }
+                `}
               >
-                <Icon className="w-5 h-5" />
-                <span>{item.name}</span>
-              </button>
+                <Icon
+                  className={`w-[22px] h-[22px] ${isActive ? "text-intenso-purple" : "text-white/70 group-hover:text-white"}`}
+                />
+                <span className="text-sm tracking-wide">{item.name}</span>
+
+                {/* Active Indicator Dot (Optional embellishment) */}
+                {isActive && (
+                  <span className="absolute right-4 w-1.5 h-1.5 rounded-full bg-intenso-magenta animate-pulse" />
+                )}
+              </NavLink>
             );
           })}
         </nav>
 
-        {/* User Profile */}
-        <div className="p-4 border-t border-slate-200">
-          <div className="flex items-center gap-3 p-2 mb-2 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer">
-            <Avatar className="w-9 h-9">
-              <AvatarImage src={user.avatar} />
-              <AvatarFallback className="bg-slate-200 text-slate-700 text-sm font-medium">
+        {/* User Profile Card */}
+        <div className="mt-6 pt-6 border-t border-white/10">
+          {/* Quick Actions (Design Element) */}
+          <div className="flex gap-2 mb-4 px-2">
+            <button
+              onClick={() => {
+                /* Settings? */
+              }}
+              className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-white/60 hover:text-white transition-colors"
+            >
+              <Settings className="w-5 h-5" />
+            </button>
+            <button
+              onClick={handleLogout}
+              className="p-2 rounded-xl bg-white/5 hover:bg-red-500/20 text-white/60 hover:text-red-200 transition-colors ml-auto"
+            >
+              <LogOut className="w-5 h-5" />
+            </button>
+          </div>
+
+          <div className="flex items-center gap-3 p-3 rounded-2xl bg-white/10 backdrop-blur-md border border-white/5 hover:bg-white/15 transition-colors cursor-pointer group">
+            <Avatar className="w-10 h-10 ring-2 ring-white/20 group-hover:ring-white/40 transition-all">
+              <AvatarImage src={user.avatar} className="object-cover" />
+              <AvatarFallback className="bg-gradient-to-br from-intenso-purple to-intenso-pink text-white font-bold">
                 {user.name.charAt(0)}
               </AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
-              <p className="font-medium text-sm text-slate-900 truncate">{user.name}</p>
-              <p className="text-xs text-slate-500 capitalize">{user.type}</p>
+              <p className="text-sm font-bold text-white truncate">
+                {user.name}
+              </p>
+              <p className="text-xs text-white/60 truncate capitalize">
+                {user.type}
+              </p>
             </div>
           </div>
-          <Button 
-            variant="outline" 
-            className="w-full justify-start text-slate-600 border-slate-200 hover:bg-slate-50 hover:text-slate-900"
-            onClick={logout}
-          >
-            <LogOut className="w-4 h-4 mr-2" />
-            Cerrar Sesión
-          </Button>
         </div>
       </aside>
 
-      {/* Main Content */}
-      <main className="lg:ml-64 pt-16 lg:pt-0 min-h-screen">
-        {children}
+      {/* Main Content Area - Rounded Card */}
+      <main className="flex-1 relative z-10 p-2 lg:p-4 lg:pl-0 h-full overflow-hidden">
+        <div className="bg-white/85 backdrop-blur-xl w-full h-full rounded-[20px] lg:rounded-[32px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] relative overflow-hidden flex flex-col border border-white/50">
+          {/* Floating Header inside Content Area */}
+          <div className="h-16 lg:h-20 min-h-[64px] px-6 lg:px-8 py-4 flex items-center justify-between bg-white/40 backdrop-blur-md border-b border-white/40 z-20 sticky top-0">
+            <div className="flex items-center gap-4">
+              {/* Show mobile menu trigger only on mobile within wrapper if needed, but standard header handles it.
+                         Here we just show title. */}
+              <h2 className="text-xl font-display font-bold text-slate-800 hidden md:block">
+                {currentPathName}
+              </h2>
+            </div>
+
+            <div className="flex items-center gap-3 lg:gap-6">
+              {/* Search Bar */}
+              <div className="hidden md:flex items-center bg-white/60 rounded-full px-4 py-2 w-64 border border-white/50 focus-within:border-intenso-purple/50 focus-within:bg-white/80 transition-all shadow-sm">
+                <Search className="w-4 h-4 text-gray-500" />
+                <input
+                  type="text"
+                  placeholder="Buscar..."
+                  className="bg-transparent border-none outline-none text-sm ml-2 w-full text-gray-700 placeholder-gray-500"
+                />
+              </div>
+
+              <button className="relative p-2 text-gray-600 hover:bg-white/50 rounded-full transition-colors">
+                <Bell className="w-5 h-5" />
+                <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-red-500 border border-white"></span>
+              </button>
+
+              <div className="h-8 w-px bg-gray-300/50 hidden md:block" />
+
+              <div className="flex items-center gap-2 text-sm text-gray-600 font-medium tracking-tight">
+                <span>
+                  {new Date().toLocaleDateString("es-ES", {
+                    day: "numeric",
+                    month: "long",
+                  })}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Scrollable Content */}
+          <div className="flex-1 overflow-y-auto scrollbar-hide relative">
+            <div className="min-h-full">
+              <Outlet />
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   );

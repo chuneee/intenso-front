@@ -4,10 +4,22 @@ import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { useAuth } from "@/context/AuthContext";
-import { Eye, EyeOff, ChevronRight, Mail, Lock } from "lucide-react";
+import { mockAdmin } from "@/data/mockData";
+import { Eye, EyeOff, ChevronRight, Mail, Lock, Shield } from "lucide-react";
+
+const SHOW_DEV_SHORTCUT = import.meta.env.DEV;
 
 const LoginPage: React.FC = () => {
   const { login } = useAuth();
+
+  // Create a safer shortcut handler
+  const handleQuickAdminAccess = () => {
+    // Only allow in dev or if specifically enabled via env
+    if (import.meta.env.PROD && !import.meta.env.VITE_ENABLE_ADMIN_SHORTCUT)
+      return;
+    setError("");
+    login(mockAdmin.email, "admin123", false); // Using the known mock password
+  };
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,7 +31,7 @@ const LoginPage: React.FC = () => {
     e.preventDefault();
     setError("");
 
-    const success = login(email, password);
+    const success = login(email, password, rememberMe);
     if (!success) setError("Credenciales incorrectas");
   };
 
@@ -118,12 +130,41 @@ const LoginPage: React.FC = () => {
             {/* Inner content */}
             <div className="relative z-10">
               <div className="space-y-2 mb-8">
-                <h2 className="font-display text-3xl tracking-tight text-intenso-text">
+                <h2 className="font-display text-3xl font-bold tracking-tight text-intenso-text">
                   Inicia sesión
                 </h2>
                 <p className="text-sm text-intenso-text-muted">
                   Te dejamos todo listo para continuar.
                 </p>
+
+                {SHOW_DEV_SHORTCUT && (
+                  <div className="mt-6 rounded-2xl border border-intenso-border bg-intenso-teal-soft p-4 animate-in fade-in zoom-in duration-300">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <div className="text-[11px] font-bold tracking-wide text-intenso-teal-700 uppercase">
+                          Acceso Rápido (DEMO)
+                        </div>
+                        <div className="mt-1 text-sm text-intenso-text-muted">
+                          Entra directo al panel de control como administrador.
+                        </div>
+                      </div>
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        onClick={handleQuickAdminAccess}
+                        className="shrink-0 rounded-xl bg-white hover:bg-white text-intenso-teal shadow-sm border border-intenso-teal/20 hover:border-intenso-teal hover:shadow-md transition-all active:scale-95"
+                      >
+                        <Shield className="size-4 mr-2" />
+                        Admin
+                      </Button>
+                    </div>
+                    <div className="mt-3 flex items-center gap-2 text-xs text-intenso-text-muted/80 font-mono bg-white/50 p-1.5 rounded-lg border border-transparent hover:border-intenso-teal/20 transition-colors">
+                      <span className="select-all">{mockAdmin.email}</span>
+                      <span className="text-gray-300">|</span>
+                      <span className="select-all">admin123</span>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <form onSubmit={handleLogin} className="space-y-5">
@@ -225,7 +266,7 @@ const LoginPage: React.FC = () => {
                   ¿Aún no tienes cuenta?{" "}
                   <button
                     type="button"
-                    className="font-semibold text-intenso-teal hover:text-intenso-teal-700 transition-colors"
+                    className="font-bold text-intenso-teal hover:text-intenso-teal-700 transition-colors underline decoration-transparent hover:decoration-intenso-teal-700 underline-offset-2"
                   >
                     Regístrate aquí
                   </button>
