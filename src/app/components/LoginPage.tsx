@@ -38,12 +38,12 @@ const LoginPage: React.FC = () => {
           <img
             src="/img/isotipo.png"
             alt=""
-            className="absolute -bottom-[10%] -left-[10%] w-[900px] -rotate-6 select-none"
+            className="absolute -bottom-[10%] -left-[10%] w-[900px] rotate-12 select-none"
             draggable={false}
           />
         </div>
-        {/* Soft Spotlights */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.12),transparent_55%),radial-gradient(circle_at_80%_80%,rgba(255,255,255,0.08),transparent_50%)]" />
+        {/* Soft Spotlights & Color Accents */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.12),transparent_55%),radial-gradient(circle_at_90%_85%,color-mix(in_srgb,var(--intenso-purple-500)_15%,transparent),transparent_45%)]" />
       </div>
 
       {/* --- Main Content Grid --- */}
@@ -72,20 +72,26 @@ const LoginPage: React.FC = () => {
 
           {/* Pillars Cards */}
           <div className="mt-12 grid grid-cols-3 gap-4 max-w-md">
-            <div className="rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-4 transition-transform hover:-translate-y-1 duration-300">
-              <div className="font-display text-xl mb-1">Orden</div>
+            <div className="group rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-4 transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:border-intenso-teal-500/30 hover:shadow-[0_0_20px_rgba(14,141,141,0.15)]">
+              <div className="font-display text-xl mb-1 group-hover:text-intenso-teal-50 transition-colors">
+                Orden
+              </div>
               <div className="text-xs text-white/80 leading-snug">
                 Operación clara
               </div>
             </div>
-            <div className="rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-4 transition-transform hover:-translate-y-1 duration-300 delay-75">
-              <div className="font-display text-xl mb-1">Foco</div>
+            <div className="group rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-4 transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:border-intenso-purple-500/30 hover:shadow-[0_0_20px_rgba(138,59,192,0.15)] delay-75">
+              <div className="font-display text-xl mb-1 group-hover:text-purple-100 transition-colors">
+                Foco
+              </div>
               <div className="text-xs text-white/80 leading-snug">
                 KPIs y control
               </div>
             </div>
-            <div className="rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-4 transition-transform hover:-translate-y-1 duration-300 delay-150">
-              <div className="font-display text-xl mb-1">Alma</div>
+            <div className="group rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 p-4 transition-all duration-300 hover:-translate-y-1 hover:bg-white/15 hover:border-intenso-yellow-500/30 hover:shadow-[0_0_20px_rgba(241,186,95,0.15)] delay-150">
+              <div className="font-display text-xl mb-1 group-hover:text-yellow-100 transition-colors">
+                Alma
+              </div>
               <div className="text-xs text-white/80 leading-snug">
                 Creatividad viva
               </div>
