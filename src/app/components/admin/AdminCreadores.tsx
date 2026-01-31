@@ -29,7 +29,12 @@ import {
   AvatarImage,
 } from "@/app/components/ui/avatar";
 import { mockCreadores } from "@/data/mockData";
-import { Search, Eye, Edit, Star } from "lucide-react";
+import {
+  MagnifyingGlassIcon,
+  EyeIcon,
+  PencilSquareIcon,
+  StarIcon,
+} from "@heroicons/react/24/solid";
 
 const AdminCreadores: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -64,11 +69,11 @@ const AdminCreadores: React.FC = () => {
       </div>
 
       {/* Filters */}
-      <Card className="mb-4 sm:mb-6 border-none shadow-sm">
+      <Card className="mb-4 sm:mb-6 border-none shadow-sm bg-white/50 backdrop-blur-sm">
         <CardContent className="pt-4 sm:pt-6">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-intenso-text-muted w-4 h-4" />
+              <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-intenso-text-muted w-4 h-4" />
               <Input
                 placeholder="Buscar por nombre o email..."
                 value={searchQuery}
@@ -94,11 +99,20 @@ const AdminCreadores: React.FC = () => {
       </Card>
 
       {/* Table */}
-      <Card className="border-none shadow-sm overflow-hidden">
-        <CardHeader className="border-b border-gray-100/50 pb-4">
-          <CardTitle className="text-intenso-text text-base sm:text-lg font-display">
-            Creadores Registrados ({filteredCreadores.length})
-          </CardTitle>
+      <Card className="border-none shadow-sm overflow-hidden bg-white/50 backdrop-blur-sm">
+        <CardHeader className="border-b border-gray-100 pb-4 bg-gradient-to-r from-white/80 to-transparent">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-intenso-text text-base sm:text-lg font-display flex items-center gap-2">
+              <div className="w-1.5 h-6 bg-gradient-to-b from-intenso-teal-500 to-emerald-500 rounded-full"></div>
+              Creadores Registrados ({filteredCreadores.length})
+            </CardTitle>
+            <Badge
+              variant="secondary"
+              className="bg-intenso-teal-50 text-intenso-teal-700 border border-intenso-teal-200 font-medium"
+            >
+              {filteredCreadores.length} total
+            </Badge>
+          </div>
         </CardHeader>
         <CardContent className="p-0">
           <div className="overflow-x-auto">
@@ -172,7 +186,7 @@ const AdminCreadores: React.FC = () => {
                               <Badge
                                 key={n}
                                 variant="outline"
-                                className="border-gray-200 text-intenso-text-muted font-normal text-xs"
+                                className="border-intenso-teal-200 bg-intenso-teal-50 text-intenso-teal-700 font-normal text-xs"
                               >
                                 {n}
                               </Badge>
@@ -185,29 +199,31 @@ const AdminCreadores: React.FC = () => {
                               <span
                                 key={p.name}
                                 title={p.name}
-                                className="text-xs bg-gray-50 px-2 py-0.5 rounded border border-gray-100 text-intenso-text-muted capitalize"
+                                className="text-xs bg-intenso-purple-50 px-2 py-1 rounded border border-intenso-purple-200 text-intenso-purple-700 capitalize font-medium"
                               >
                                 {p.name}
                               </span>
                             ))}
                           </div>
                         </TableCell>
-                        <TableCell className="hidden sm:table-cell font-medium text-intenso-text">
+                        <TableCell className="hidden sm:table-cell font-bold text-intenso-text">
                           {(totalFollowers / 1000).toFixed(1)}K
                         </TableCell>
                         <TableCell className="hidden md:table-cell">
-                          <div className="flex items-center text-intenso-orange-500 font-bold">
-                            <Star className="w-4 h-4 mr-1 fill-current" />
-                            {creador.rating}
+                          <div className="flex items-center gap-1">
+                            <StarIcon className="w-4 h-4 text-intenso-orange-500" />
+                            <span className="font-bold text-intenso-orange-600">
+                              {creador.rating}
+                            </span>
                           </div>
                         </TableCell>
                         <TableCell className="hidden xl:table-cell">
-                          <span className="text-sm text-intenso-text-muted">
+                          <span className="text-sm font-medium text-intenso-text-muted">
                             12
                           </span>
                         </TableCell>
                         <TableCell className="hidden sm:table-cell">
-                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-100">
+                          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-pink-50 text-intenso-pink-700 border border-pink-100">
                             Activo
                           </span>
                         </TableCell>
@@ -218,14 +234,14 @@ const AdminCreadores: React.FC = () => {
                               size="sm"
                               className="hover:text-intenso-teal-600 hover:bg-intenso-teal-50"
                             >
-                              <Eye className="w-4 h-4" />
+                              <EyeIcon className="w-4 h-4" />
                             </Button>
                             <Button
                               variant="ghost"
                               size="sm"
                               className="hover:text-intenso-purple-600 hover:bg-intenso-purple-50"
                             >
-                              <Edit className="w-4 h-4" />
+                              <PencilSquareIcon className="w-4 h-4" />
                             </Button>
                           </div>
                         </TableCell>

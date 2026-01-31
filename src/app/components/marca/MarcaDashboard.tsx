@@ -1,40 +1,40 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/card";
-import { Badge } from "@/app/components/ui/badge";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/app/components/ui/card";
 import { Button } from "@/app/components/ui/button";
 import { mockCampaigns, mockServicePurchases } from "@/data/mockData";
 import { useAuth } from "@/context/AuthContext";
-import { Megaphone, TrendingUp, DollarSign, CheckCircle2, ArrowRight } from "lucide-react";
+import {
+  SparklesIcon,
+  ArrowRightIcon,
+  CurrencyDollarIcon,
+  MegaphoneIcon,
+  CheckCircleIcon,
+  ArrowTrendingUpIcon,
+} from "@heroicons/react/24/solid";
 
 const MarcaDashboard: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
   const userCampaigns = mockCampaigns.filter((c) => c.marcaId === user?.id);
-  const userPurchases = mockServicePurchases.filter((p) => p.marcaId === user?.id);
+  const userPurchases = mockServicePurchases.filter(
+    (p) => p.marcaId === user?.id,
+  );
 
   const activeCampaigns = userCampaigns.filter(
     (c) => c.status === "activa" || c.status === "en_progreso",
   );
   const totalBudget = userCampaigns.reduce((sum, c) => sum + c.budget, 0);
-  const completedCampaigns = userCampaigns.filter((c) => c.status === "completada").length;
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "activa":
-        return "bg-green-100 text-green-700";
-      case "en_progreso":
-        return "bg-blue-100 text-blue-700";
-      case "completada":
-        return "bg-gray-100 text-gray-700";
-      case "borrador":
-        return "bg-yellow-100 text-yellow-700";
-      default:
-        return "bg-gray-100 text-gray-700";
-    }
-  };
+  const completedCampaigns = userCampaigns.filter(
+    (c) => c.status === "completada",
+  ).length;
 
   const getStatusLabel = (status: string) => {
     switch (status) {
@@ -54,66 +54,123 @@ const MarcaDashboard: React.FC = () => {
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 bg-intenso-bg">
-      <div className="mb-6 sm:mb-8">
-        <h1 className="font-display text-2xl sm:text-3xl font-semibold text-intenso-text">
-          Dashboard
-        </h1>
-        <p className="text-intenso-text-muted mt-1 text-sm sm:text-base">
-          Bienvenido de vuelta, {user?.name}
-        </p>
+    <div className="p-4 sm:p-6 lg:p-8 space-y-8 animate-in fade-in duration-500">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <div className="h-1.5 w-8 rounded-full bg-gradient-to-r from-intenso-purple-500 to-intenso-pink-500" />
+            <span className="text-xs font-bold tracking-wider text-intenso-text-muted uppercase">
+              Marca Dashboard
+            </span>
+          </div>
+          <h1 className="font-display text-2xl sm:text-3xl font-bold text-intenso-text tracking-tight">
+            Hola, {user?.name}
+          </h1>
+          <p className="text-intenso-text-muted mt-1 text-sm sm:text-base">
+            Gestiona tus campañas y creadores desde aquí.
+          </p>
+        </div>
+        <Button
+          className="hidden sm:flex bg-intenso-magenta-500 text-white hover:bg-intenso-magenta-600 shadow-lg shadow-intenso-magenta-500/30 transition-all duration-300"
+          onClick={() => navigate("/marca/campaigns")}
+        >
+          <SparklesIcon className="w-4 h-4 mr-2" />
+          Nueva Campaña
+        </Button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-        <Card variant="kpi" interactive onClick={() => navigate("/marca/campaigns")}>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="kpi-label text-sm">Campanas activas</CardTitle>
-            <div className="w-10 h-10 bg-intenso-purple/10 rounded-xl flex items-center justify-center">
-              <Megaphone className="w-5 h-5 text-intenso-purple" />
-            </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        {/* KPI: Campañas Activas */}
+        <Card
+          className="relative overflow-hidden border-none bg-white/40 backdrop-blur-sm shadow-sm hover:shadow-lg hover:bg-white/60 transition-all duration-300 group cursor-pointer"
+          onClick={() => navigate("/marca/campaigns")}
+        >
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-intenso-purple-500 to-intenso-pink-500 opacity-80" />
+
+          <CardHeader className="pb-2 pt-6">
+            <CardTitle className="text-sm font-medium text-intenso-text-muted uppercase tracking-wider flex justify-between items-center">
+              Campañas activas
+              <div className="w-8 h-8 bg-intenso-purple-50 rounded-lg flex items-center justify-center">
+                <MegaphoneIcon className="w-4 h-4 text-intenso-purple-600" />
+              </div>
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="kpi-number text-3xl font-semibold text-intenso-text">{activeCampaigns.length}</div>
-            <p className="kpi-label text-xs mt-1">{userCampaigns.length} campanas totales</p>
+            <div className="text-4xl font-display font-bold text-intenso-text mb-1">
+              {activeCampaigns.length}
+            </div>
+            <p className="text-xs text-intenso-text-muted flex items-center gap-1">
+              <span className="text-intenso-purple-600 font-bold bg-intenso-purple-50 px-2 py-0.5 rounded-full border border-intenso-purple-100">
+                {userCampaigns.length}
+              </span>
+              <span className="opacity-70 ml-1">en total</span>
+            </p>
           </CardContent>
         </Card>
 
-        <Card variant="kpi">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="kpi-label text-sm">Inversion total</CardTitle>
-            <div className="w-10 h-10 bg-intenso-teal-soft rounded-xl flex items-center justify-center">
-              <DollarSign className="w-5 h-5 text-intenso-teal" />
-            </div>
+        {/* KPI: Inversión Total */}
+        <Card className="relative overflow-hidden border-none bg-white/40 backdrop-blur-sm shadow-sm hover:shadow-lg hover:bg-white/60 transition-all duration-300 group">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-intenso-teal-500 to-emerald-500 opacity-80" />
+
+          <CardHeader className="pb-2 pt-6">
+            <CardTitle className="text-sm font-medium text-intenso-text-muted uppercase tracking-wider flex justify-between items-center">
+              Inversión total
+              <div className="w-8 h-8 bg-intenso-teal-50 rounded-lg flex items-center justify-center">
+                <CurrencyDollarIcon className="w-4 h-4 text-intenso-teal-600" />
+              </div>
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="kpi-number kpi-emphasis text-3xl font-semibold">${totalBudget.toLocaleString()}</div>
-            <p className="kpi-label text-xs mt-1">En todas las campanas</p>
+            <div className="text-4xl font-display font-bold text-intenso-text mb-1 tracking-tight">
+              ${totalBudget.toLocaleString()}
+            </div>
+            <p className="text-xs text-intenso-text-muted mt-1">
+              Presupuesto asignado
+            </p>
           </CardContent>
         </Card>
 
-        <Card variant="kpi" className="sm:col-span-2 lg:col-span-1">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="kpi-label text-sm">Completadas</CardTitle>
-            <div className="w-10 h-10 bg-intenso-yellow/20 rounded-xl flex items-center justify-center">
-              <CheckCircle2 className="w-5 h-5 text-intenso-yellow" />
-            </div>
+        {/* KPI: Completadas */}
+        <Card className="relative overflow-hidden border-none bg-white/40 backdrop-blur-sm shadow-sm hover:shadow-lg hover:bg-white/60 transition-all duration-300 group sm:col-span-2 lg:col-span-1">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-intenso-yellow-400 to-intenso-orange-500 opacity-80" />
+
+          <CardHeader className="pb-2 pt-6">
+            <CardTitle className="text-sm font-medium text-intenso-text-muted uppercase tracking-wider flex justify-between items-center">
+              Completadas
+              <div className="w-8 h-8 bg-intenso-orange-50 rounded-lg flex items-center justify-center">
+                <CheckCircleIcon className="w-4 h-4 text-intenso-orange-600" />
+              </div>
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="kpi-number text-3xl font-semibold text-intenso-text">{completedCampaigns}</div>
-            <p className="kpi-label text-xs mt-1">Campanas exitosas</p>
+            <div className="text-4xl font-display font-bold text-intenso-text mb-1">
+              {completedCampaigns}
+            </div>
+            <p className="text-xs text-intenso-text-muted flex items-center gap-1">
+              <span className="text-intenso-orange-600 font-bold bg-intenso-orange-50 px-2 py-0.5 rounded-full border border-intenso-orange-100">
+                100%
+              </span>
+              <span className="opacity-70 ml-1">tasa de éxito</span>
+            </p>
           </CardContent>
         </Card>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-        <Card className="shadow-sm">
+        <Card className="border-none bg-white/50 backdrop-blur-sm shadow-sm h-full">
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="font-display text-base sm:text-lg text-intenso-text">
-              Campanas recientes
+            <CardTitle className="font-display text-lg text-intenso-text flex items-center gap-2">
+              <div className="w-1.5 h-6 bg-intenso-purple-500 rounded-full"></div>
+              Campañas recientes
             </CardTitle>
-            <Button variant="ghost" size="sm" onClick={() => navigate("/marca/campaigns")}>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate("/marca/campaigns")}
+              className="hover:bg-white/50"
+            >
               <span className="hidden sm:inline">Ver todas</span>
-              <ArrowRight className="w-4 h-4 sm:ml-2" />
+              <ArrowRightIcon className="w-4 h-4 sm:ml-2" />
             </Button>
           </CardHeader>
           <CardContent>
@@ -121,25 +178,52 @@ const MarcaDashboard: React.FC = () => {
               {userCampaigns.slice(0, 3).map((campaign) => (
                 <div
                   key={campaign.id}
-                  className="flex flex-col sm:flex-row sm:items-start justify-between p-3 sm:p-4 border border-border rounded-xl hover:bg-muted transition-colors cursor-pointer gap-3"
+                  className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 bg-white/40 border border-white/50 rounded-xl hover:bg-white/60 transition-all cursor-pointer gap-3 group"
                   onClick={() => navigate("/marca/campaigns")}
                 >
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-semibold text-intenso-text text-sm sm:text-base truncate">
-                      {campaign.title}
-                    </h4>
-                    <p className="text-xs sm:text-sm text-intenso-text-muted mt-1">{campaign.category}</p>
-                    <div className="flex items-center gap-2 mt-2 flex-wrap">
-                      <Badge className={getStatusColor(campaign.status)}>
-                        {getStatusLabel(campaign.status)}
-                      </Badge>
-                      <span className="text-xs text-intenso-text-muted">
-                        {campaign.creadores.length} creadores
-                      </span>
+                  <div className="flex-1 min-w-0 flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-intenso-purple-100 to-white flex items-center justify-center shadow-sm">
+                      <MegaphoneIcon className="w-5 h-5 text-intenso-purple-500" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-intenso-text text-sm sm:text-base truncate group-hover:text-intenso-purple-700 transition-colors">
+                        {campaign.title}
+                      </h4>
+                      <div className="flex items-center gap-2 mt-0.5">
+                        <div className="flex items-center gap-1.5">
+                          <div
+                            className={`w-2 h-2 rounded-full ${
+                              campaign.status === "activa"
+                                ? "bg-intenso-teal-500"
+                                : campaign.status === "en_progreso"
+                                  ? "bg-intenso-purple-500"
+                                  : campaign.status === "completada"
+                                    ? "bg-slate-400"
+                                    : "bg-gray-400"
+                            }`}
+                          />
+                          <span
+                            className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full border ${
+                              campaign.status === "activa"
+                                ? "bg-intenso-teal-50 text-intenso-teal-700 border-intenso-teal-100"
+                                : campaign.status === "en_progreso"
+                                  ? "bg-intenso-purple-50 text-intenso-purple-700 border-intenso-purple-100"
+                                  : campaign.status === "completada"
+                                    ? "bg-slate-50 text-slate-600 border-slate-100"
+                                    : "bg-gray-50 text-gray-500 border-gray-100"
+                            }`}
+                          >
+                            {getStatusLabel(campaign.status)}
+                          </span>
+                        </div>
+                        <span className="text-xs text-intenso-text-muted">
+                          • {campaign.creadores.length} creadores
+                        </span>
+                      </div>
                     </div>
                   </div>
-                  <div className="text-left sm:text-right">
-                    <p className="font-semibold text-intenso-text text-sm sm:text-base">
+                  <div className="text-left sm:text-right pl-12 sm:pl-0">
+                    <p className="font-bold text-intenso-text text-sm sm:text-base">
                       ${campaign.budget.toLocaleString()}
                     </p>
                   </div>
@@ -147,30 +231,39 @@ const MarcaDashboard: React.FC = () => {
               ))}
 
               {userCampaigns.length === 0 && (
-                <div className="text-center py-8 sm:py-12 text-intenso-text-muted">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                    <Megaphone className="w-6 h-6 sm:w-8 sm:h-8 text-intenso-text-muted" />
+                <div className="text-center py-12 text-intenso-text-muted bg-white/20 rounded-xl border border-dashed border-white/40">
+                  <div className="w-16 h-16 bg-white/50 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
+                    <SparklesIcon className="w-8 h-8 text-intenso-purple-300" />
                   </div>
-                  <p className="font-medium text-sm sm:text-base text-intenso-text">
-                    No tienes campanas aun
+                  <p className="font-medium text-intenso-text">
+                    No tienes campañas aún
                   </p>
-                  <p className="text-xs sm:text-sm text-intenso-text-muted mt-1">
-                    Crea tu primera campana para comenzar
-                  </p>
+                  <Button
+                    className="mt-4 bg-intenso-purple-500 text-white hover:bg-intenso-purple-600 shadow-lg shadow-intenso-purple-500/30"
+                    onClick={() => navigate("/marca/campaigns")}
+                  >
+                    Crear primera campaña
+                  </Button>
                 </div>
               )}
             </div>
           </CardContent>
         </Card>
 
-        <Card className="shadow-sm">
+        <Card className="border-none bg-white/50 backdrop-blur-sm shadow-sm h-full">
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="font-display text-base sm:text-lg text-intenso-text">
+            <CardTitle className="font-display text-lg text-intenso-text flex items-center gap-2">
+              <div className="w-1.5 h-6 bg-intenso-teal-500 rounded-full"></div>
               Servicios contratados
             </CardTitle>
-            <Button variant="ghost" size="sm" onClick={() => navigate("/marca/services")}>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate("/marca/services")}
+              className="hover:bg-white/50"
+            >
               <span className="hidden sm:inline">Ver todos</span>
-              <ArrowRight className="w-4 h-4 sm:ml-2" />
+              <ArrowRightIcon className="w-4 h-4 sm:ml-2" />
             </Button>
           </CardHeader>
           <CardContent>
@@ -178,41 +271,63 @@ const MarcaDashboard: React.FC = () => {
               {userPurchases.map((purchase) => (
                 <div
                   key={purchase.id}
-                  className="flex flex-col sm:flex-row sm:items-start justify-between p-3 sm:p-4 border border-border rounded-xl gap-3"
+                  className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 bg-white/40 border border-white/50 rounded-xl hover:bg-white/60 transition-all gap-3"
                 >
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-semibold text-intenso-text text-sm sm:text-base truncate">
-                      {purchase.serviceName}
-                    </h4>
-                    <p className="text-xs sm:text-sm text-intenso-text-muted mt-1">
-                      {new Date(purchase.purchaseDate).toLocaleDateString("es-ES", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </p>
-                    <Badge className={`mt-2 ${getStatusColor(purchase.status)}`}>
-                      {getStatusLabel(purchase.status)}
-                    </Badge>
+                  <div className="flex-1 min-w-0 flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-intenso-teal-100 to-white flex items-center justify-center shadow-sm">
+                      <CurrencyDollarIcon className="w-5 h-5 text-intenso-teal-600" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-intenso-text text-sm sm:text-base truncate">
+                        {purchase.serviceName}
+                      </h4>
+                      <p className="text-xs text-intenso-text-muted">
+                        {new Date(purchase.purchaseDate).toLocaleDateString(
+                          "es-ES",
+                        )}
+                      </p>
+                    </div>
                   </div>
-                  <div className="text-left sm:text-right">
-                    <p className="font-semibold text-intenso-text text-sm sm:text-base">
+                  <div className="text-left sm:text-right pl-12 sm:pl-0">
+                    <p className="font-bold text-intenso-text text-sm sm:text-base">
                       ${purchase.price.toLocaleString()}
                     </p>
+                    <div className="flex items-center gap-1.5 justify-start sm:justify-end mt-1">
+                      <div
+                        className={`w-2 h-2 rounded-full ${
+                          purchase.status === "completado"
+                            ? "bg-intenso-teal-500"
+                            : "bg-intenso-orange-500"
+                        }`}
+                      />
+                      <span
+                        className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full border ${
+                          purchase.status === "completado"
+                            ? "bg-intenso-teal-50 text-intenso-teal-700 border-intenso-teal-100"
+                            : "bg-intenso-orange-50 text-intenso-orange-700 border-intenso-orange-100"
+                        }`}
+                      >
+                        {purchase.status}
+                      </span>
+                    </div>
                   </div>
                 </div>
               ))}
 
               {userPurchases.length === 0 && (
-                <div className="text-center py-8 sm:py-12 text-intenso-text-muted">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                    <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8 text-intenso-text-muted" />
+                <div className="text-center py-12 text-intenso-text-muted bg-white/20 rounded-xl border border-dashed border-white/40">
+                  <div className="w-16 h-16 bg-white/50 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
+                    <ArrowTrendingUpIcon className="w-8 h-8 text-intenso-text-muted/50" />
                   </div>
-                  <p className="font-medium text-sm sm:text-base text-intenso-text">
-                    No has contratado servicios aun
+                  <p className="font-medium text-intenso-text">
+                    No has contratado servicios aún
                   </p>
-                  <Button className="mt-4" onClick={() => navigate("/marca/services")}>
-                    Explorar servicios
+                  <Button
+                    className="mt-4 border-intenso-purple/20 bg-white/50 hover:bg-white"
+                    variant="outline"
+                    onClick={() => navigate("/marca/services")}
+                  >
+                    Explorar Marketplace
                   </Button>
                 </div>
               )}

@@ -8,17 +8,40 @@
   --intenso-teal-500: #0e8d8d;
   --intenso-teal-600: #35797a;
   --intenso-teal-700: #2c6768;
+  --intenso-teal-200: #b3e0e0;
+  --intenso-teal-100: #d9f0f0;
   --intenso-teal-50: #e6f2f2;
 
   --intenso-purple-500: #8a3bc0;
   --intenso-purple-600: #732a9e;
+  --intenso-purple-700: #5e2282;
+  --intenso-purple-200: #d4b3e8;
+  --intenso-purple-100: #e8d9f4;
+  --intenso-purple-50: #f4eafb;
 
-  --intenso-magenta-500: #f15ba6; /* Nueva referencia de imagen */
+  --intenso-magenta-500: #f15ba6;
+  --intenso-magenta-600: #d94a91;
+  --intenso-magenta-700: #b93d78;
+  --intenso-magenta-200: #f9c4df;
+  --intenso-magenta-50: #fef0f7;
+
   --intenso-pink-500: #b447cc;
+  --intenso-pink-600: #9839ab;
+  --intenso-pink-700: #7d2f8f;
+  --intenso-pink-200: #e5c3f0;
+  --intenso-pink-100: #f0daf7;
+  --intenso-pink-50: #faf2fc;
 
-  --intenso-orange-500: #faba5f; /* Nueva referencia */
-  --intenso-yellow-500: #f1ba5f; /* Existente, muy similar */
-  --intenso-yellow-bright: #efeb68; /* Nueva referencia */
+  --intenso-orange-500: #faba5f;
+  --intenso-orange-600: #e0a548;
+  --intenso-orange-700: #c28f3c;
+  --intenso-orange-200: #fde4bb;
+  --intenso-orange-100: #fef2dd;
+  --intenso-orange-50: #fef7eb;
+
+  --intenso-yellow-500: #f1ba5f;
+  --intenso-yellow-200: #f9e4bb;
+  --intenso-yellow-bright: #efeb68;
 
   --intenso-coral-500: #f77479; /* Nueva referencia */
 
@@ -177,16 +200,37 @@
   --color-intenso-teal: var(--intenso-teal-500);
   --color-intenso-teal-hover: var(--intenso-teal-600);
   --color-intenso-teal-active: var(--intenso-teal-700);
+  --color-intenso-teal-200: var(--intenso-teal-200);
   --color-intenso-teal-soft: var(--intenso-teal-50);
 
   --color-intenso-purple: var(--intenso-purple-500);
   --color-intenso-purple-dark: var(--intenso-purple-600);
+  --color-intenso-purple-700: var(--intenso-purple-700);
+  --color-intenso-purple-200: var(--intenso-purple-200);
+  --color-intenso-purple-100: var(--intenso-purple-100);
+  --color-intenso-purple-50: var(--intenso-purple-50);
 
   --color-intenso-magenta: var(--intenso-magenta-500);
+  --color-intenso-magenta-600: var(--intenso-magenta-600);
+  --color-intenso-magenta-700: var(--intenso-magenta-700);
+  --color-intenso-magenta-200: var(--intenso-magenta-200);
+  --color-intenso-magenta-50: var(--intenso-magenta-50);
+
   --color-intenso-pink: var(--intenso-pink-500);
+  --color-intenso-pink-600: var(--intenso-pink-600);
+  --color-intenso-pink-700: var(--intenso-pink-700);
+  --color-intenso-pink-200: var(--intenso-pink-200);
+  --color-intenso-pink-100: var(--intenso-pink-100);
+  --color-intenso-pink-50: var(--intenso-pink-50);
 
   --color-intenso-orange: var(--intenso-orange-500);
+  --color-intenso-orange-600: var(--intenso-orange-600);
+  --color-intenso-orange-700: var(--intenso-orange-700);
+  --color-intenso-orange-200: var(--intenso-orange-200);
+  --color-intenso-orange-50: var(--intenso-orange-50);
+
   --color-intenso-yellow: var(--intenso-yellow-500);
+  --color-intenso-yellow-200: var(--intenso-yellow-200);
   --color-intenso-yellow-bright: var(--intenso-yellow-bright);
 
   --color-intenso-coral: var(--intenso-coral-500);

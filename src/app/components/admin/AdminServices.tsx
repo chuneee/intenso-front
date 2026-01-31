@@ -20,7 +20,16 @@ import {
 } from "@/app/components/ui/dialog";
 import { mockServices } from "@/data/mockData";
 import { Service } from "@/types";
-import { Edit, Plus, Power, DollarSign } from "lucide-react";
+import {
+  PencilSquareIcon,
+  PlusIcon,
+  PowerIcon,
+  CurrencyDollarIcon,
+  ChartBarIcon,
+  CheckCircleIcon,
+  XCircleIcon,
+  SparklesIcon,
+} from "@heroicons/react/24/solid";
 
 type ServiceStatus = "active" | "inactive";
 
@@ -103,9 +112,9 @@ const AdminServices: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <div className="h-1.5 w-8 rounded-full bg-gradient-to-r from-intenso-teal-500 to-emerald-500" />
+              <div className="h-1.5 w-8 rounded-full bg-gradient-to-r from-intenso-purple-500 to-intenso-magenta-500" />
               <span className="text-xs font-bold tracking-wider text-intenso-text-muted uppercase">
-                Catálogo
+                Catálogo Digital
               </span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold font-display text-intenso-text tracking-tight">
@@ -117,9 +126,9 @@ const AdminServices: React.FC = () => {
           </div>
           <Button
             onClick={openCreateDialog}
-            className="bg-intenso-black hover:bg-gray-800 w-full sm:w-auto text-white"
+            className="bg-intenso-magenta-500 hover:bg-intenso-magenta-600 w-full sm:w-auto text-white shadow-md"
           >
-            <Plus className="w-4 h-4 mr-2" />
+            <PlusIcon className="w-4 h-4 mr-2" />
             Crear Servicio
           </Button>
         </div>
@@ -127,35 +136,47 @@ const AdminServices: React.FC = () => {
 
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-        <Card className="border-none shadow-sm relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-intenso-teal-500 to-intenso-teal-600 opacity-80" />
-          <CardContent className="pt-6">
-            <div className="text-3xl font-bold font-display text-intenso-text">
-              {totalServices}
+        <Card className="border-none shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden group bg-white/60 backdrop-blur-sm">
+          <div className="absolute inset-0 bg-gradient-to-br from-intenso-teal-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-intenso-teal-500 to-intenso-teal-600" />
+          <CardContent className="pt-6 relative z-10">
+            <div className="flex items-center justify-between mb-2">
+              <div className="text-3xl sm:text-4xl font-bold font-display text-intenso-text">
+                {totalServices}
+              </div>
+              <ChartBarIcon className="w-8 h-8 text-intenso-teal-500 opacity-50" />
             </div>
-            <p className="text-xs uppercase tracking-wider text-intenso-text-muted font-medium mt-1">
+            <p className="text-xs sm:text-sm uppercase tracking-wider text-intenso-text-muted font-medium">
               Total Servicios
             </p>
           </CardContent>
         </Card>
-        <Card className="border-none shadow-sm relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-emerald-500 opacity-80" />
-          <CardContent className="pt-6">
-            <div className="text-3xl font-bold font-display text-intenso-text">
-              {activeServices}
+        <Card className="border-none shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden group bg-white/60 backdrop-blur-sm">
+          <div className="absolute inset-0 bg-gradient-to-br from-intenso-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-intenso-purple-500 to-intenso-purple-600" />
+          <CardContent className="pt-6 relative z-10">
+            <div className="flex items-center justify-between mb-2">
+              <div className="text-3xl sm:text-4xl font-bold font-display text-intenso-text">
+                {activeServices}
+              </div>
+              <CheckCircleIcon className="w-8 h-8 text-intenso-purple-500 opacity-50" />
             </div>
-            <p className="text-xs uppercase tracking-wider text-intenso-text-muted font-medium mt-1">
+            <p className="text-xs sm:text-sm uppercase tracking-wider text-intenso-text-muted font-medium">
               Activos
             </p>
           </CardContent>
         </Card>
-        <Card className="border-none shadow-sm relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-intenso-purple-500 to-intenso-purple-600 opacity-80" />
-          <CardContent className="pt-6">
-            <div className="text-3xl font-bold font-display text-intenso-text">
-              ${avgPrice.toLocaleString()}
+        <Card className="border-none shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden group bg-white/60 backdrop-blur-sm">
+          <div className="absolute inset-0 bg-gradient-to-br from-intenso-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-intenso-orange-500 to-intenso-orange-600" />
+          <CardContent className="pt-6 relative z-10">
+            <div className="flex items-center justify-between mb-2">
+              <div className="text-3xl sm:text-4xl font-bold font-display text-intenso-text">
+                ${avgPrice.toLocaleString()}
+              </div>
+              <CurrencyDollarIcon className="w-8 h-8 text-intenso-orange-500 opacity-50" />
             </div>
-            <p className="text-xs uppercase tracking-wider text-intenso-text-muted font-medium mt-1">
+            <p className="text-xs sm:text-sm uppercase tracking-wider text-intenso-text-muted font-medium">
               Precio Promedio
             </p>
           </CardContent>
@@ -166,43 +187,51 @@ const AdminServices: React.FC = () => {
         {services.map((service) => (
           <Card
             key={service.id}
-            className="border-none shadow-sm hover:shadow-md transition-all duration-300 group overflow-hidden flex flex-col h-full"
+            className="border-none shadow-sm hover:shadow-lg transition-all duration-300 group overflow-hidden flex flex-col h-full bg-white/60 backdrop-blur-sm hover:bg-white/80"
           >
-            <CardHeader className="pb-4 relative">
-              <div className="absolute right-4 top-4 opacity-10 group-hover:opacity-20 transition-opacity text-4xl grayscale group-hover:grayscale-0">
+            <CardHeader className="pb-4 relative bg-gradient-to-br from-white/50 to-transparent">
+              <div className="absolute right-4 top-4 opacity-20 group-hover:opacity-30 transition-all duration-300 text-5xl">
                 {getIconForService(service.name)}
               </div>
               <div className="flex justify-between items-start">
                 <Badge
                   variant="outline"
-                  className={`mb-2 font-normal border-0 ${service.status === "active" ? "bg-green-50 text-green-700" : "bg-gray-100 text-gray-500"}`}
+                  className={`mb-2 font-medium border-0 ${service.status === "active" ? "bg-intenso-teal-50 text-intenso-teal-700" : "bg-gray-100 text-gray-500"}`}
                 >
+                  {service.status === "active" ? (
+                    <CheckCircleIcon className="w-3.5 h-3.5 mr-1 inline" />
+                  ) : (
+                    <XCircleIcon className="w-3.5 h-3.5 mr-1 inline" />
+                  )}
                   {service.status === "active" ? "Activo" : "Inactivo"}
                 </Badge>
               </div>
-              <CardTitle className="text-xl text-intenso-text font-display pr-8 leading-tight">
+              <CardTitle className="text-xl text-intenso-text font-display pr-8 leading-tight group-hover:text-intenso-magenta-600 transition-colors">
                 {service.name}
               </CardTitle>
             </CardHeader>
             <CardContent className="pb-4 flex-grow">
-              <div className="text-2xl font-bold text-intenso-text mb-3 tracking-tight">
-                ${service.price.toLocaleString()}
+              <div className="flex items-center gap-2 mb-3">
+                <CurrencyDollarIcon className="w-5 h-5 text-intenso-orange-500" />
+                <div className="text-2xl font-bold text-intenso-text tracking-tight">
+                  ${service.price.toLocaleString()}
+                </div>
               </div>
               <p className="text-sm text-intenso-text-muted mb-4 line-clamp-2">
                 {service.description}
               </p>
-              <div className="space-y-1">
+              <div className="space-y-2">
                 {service.features.slice(0, 3).map((feature, i) => (
                   <div
                     key={i}
-                    className="flex items-center text-xs text-intenso-text-muted"
+                    className="flex items-start text-xs text-intenso-text-muted"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-intenso-teal-400 mr-2" />
-                    <span className="truncate">{feature}</span>
+                    <SparklesIcon className="w-3.5 h-3.5 text-intenso-teal-500 mr-2 mt-0.5 flex-shrink-0" />
+                    <span className="line-clamp-2">{feature}</span>
                   </div>
                 ))}
                 {service.features.length > 3 && (
-                  <div className="text-xs text-intenso-text-muted pl-3.5 pt-1 italic">
+                  <div className="text-xs text-intenso-magenta-600 pl-5 pt-1 font-medium">
                     +{service.features.length - 3} características más
                   </div>
                 )}
@@ -212,17 +241,17 @@ const AdminServices: React.FC = () => {
               <div className="flex gap-2">
                 <Button
                   variant="outline"
-                  className="flex-1 border-gray-200 text-intenso-text hover:bg-gray-50 hover:text-intenso-purple-600"
+                  className="flex-1 border-gray-200 text-intenso-text hover:bg-intenso-magenta-50 hover:text-intenso-magenta-600 hover:border-intenso-magenta-200 transition-all"
                   onClick={() => openEditDialog(service)}
                 >
-                  <Edit className="w-4 h-4 mr-2" />
+                  <PencilSquareIcon className="w-4 h-4 mr-2" />
                   Editar
                 </Button>
                 <Button
                   variant="ghost"
-                  className="px-3 hover:bg-red-50 hover:text-red-600 text-intenso-text-muted"
+                  className="px-3 hover:bg-red-50 hover:text-red-600 text-intenso-text-muted transition-all"
                 >
-                  <Power className="w-4 h-4" />
+                  <PowerIcon className="w-4 h-4" />
                 </Button>
               </div>
             </div>
@@ -240,12 +269,13 @@ const AdminServices: React.FC = () => {
           }
         }}
       >
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white/95 backdrop-blur-md border-none shadow-2xl">
           <DialogHeader>
-            <DialogTitle>
+            <DialogTitle className="text-2xl font-display text-intenso-text flex items-center gap-2">
+              <SparklesIcon className="w-6 h-6 text-intenso-magenta-500" />
               {isCreateOpen ? "Crear Nuevo Servicio" : "Editar Servicio"}
             </DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="text-intenso-text-muted">
               {isCreateOpen
                 ? "Completa la información del nuevo servicio digital"
                 : "Modifica los detalles del servicio"}
@@ -284,7 +314,7 @@ const AdminServices: React.FC = () => {
             <div>
               <Label htmlFor="price">Precio (USD)</Label>
               <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <CurrencyDollarIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <Input
                   id="price"
                   type="number"
@@ -307,7 +337,7 @@ const AdminServices: React.FC = () => {
                   size="sm"
                   onClick={addFeature}
                 >
-                  <Plus className="w-4 h-4 mr-1" />
+                  <PlusIcon className="w-4 h-4 mr-1" />
                   Agregar
                 </Button>
               </div>
@@ -343,10 +373,11 @@ const AdminServices: React.FC = () => {
                 setIsCreateOpen(false);
                 setIsEditOpen(false);
               }}
+              className="border-gray-200 hover:bg-gray-50"
             >
               Cancelar
             </Button>
-            <Button>
+            <Button className="bg-intenso-magenta-500 hover:bg-intenso-magenta-600 text-white shadow-md">
               {isCreateOpen ? "Crear Servicio" : "Guardar Cambios"}
             </Button>
           </DialogFooter>

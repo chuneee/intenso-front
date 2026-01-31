@@ -37,7 +37,15 @@ import {
 } from "@/app/components/ui/avatar";
 import { mockCampaigns, mockMarcas, mockCreadores } from "@/data/mockData";
 import { Campaign } from "@/types";
-import { Search, Eye, Edit, Trash2, DollarSign, Users } from "lucide-react";
+import {
+  MagnifyingGlassIcon,
+  EyeIcon,
+  PencilSquareIcon,
+  TrashIcon,
+  CurrencyDollarIcon,
+  UsersIcon,
+  PlusIcon,
+} from "@heroicons/react/24/solid";
 
 const AdminCampaigns: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -64,15 +72,15 @@ const AdminCampaigns: React.FC = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "activa":
-        return "bg-green-100 text-green-700";
+        return "bg-intenso-teal-50 text-intenso-teal-700 border border-intenso-teal-200";
       case "en_progreso":
-        return "bg-blue-100 text-blue-700";
+        return "bg-intenso-purple-50 text-intenso-purple-700 border border-intenso-purple-200";
       case "completada":
-        return "bg-gray-100 text-gray-700";
+        return "bg-intenso-pink-50 text-intenso-pink-700 border border-intenso-pink-200";
       case "borrador":
-        return "bg-yellow-100 text-yellow-700";
+        return "bg-intenso-orange-50 text-intenso-orange-700 border border-intenso-orange-200";
       default:
-        return "bg-gray-100 text-gray-700";
+        return "bg-gray-50 text-gray-700 border border-gray-200";
     }
   };
 
@@ -111,8 +119,8 @@ const AdminCampaigns: React.FC = () => {
               Administra todas las campañas de la plataforma
             </p>
           </div>
-          <Button className="bg-intenso-black hover:bg-gray-800 text-white w-full sm:w-auto">
-            <Edit className="w-4 h-4 mr-2" />
+          <Button className="bg-intenso-magenta-500 hover:bg-intenso-magenta-600 text-white w-full sm:w-auto shadow-md">
+            <PlusIcon className="w-4 h-4 mr-2" />
             Crear Campaña
           </Button>
         </div>
@@ -143,7 +151,7 @@ const AdminCampaigns: React.FC = () => {
           </CardContent>
         </Card>
         <Card className="border-none shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden group">
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-gray-400 to-gray-500 opacity-80" />
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-intenso-pink-500 to-intenso-magenta-500 opacity-80" />
           <CardContent className="pt-6">
             <div className="text-3xl sm:text-4xl font-bold font-display text-intenso-text">
               {mockCampaigns.filter((c) => c.status === "completada").length}
@@ -167,16 +175,16 @@ const AdminCampaigns: React.FC = () => {
       </div>
 
       {/* Filters */}
-      <Card className="border-none shadow-sm">
-        <CardHeader className="border-b border-gray-100/50 pb-4">
+      <Card className="border-none shadow-sm bg-white/50 backdrop-blur-sm mb-4 sm:mb-6">
+        <CardHeader className="border-b border-gray-100 pb-4">
           <div className="flex flex-col sm:flex-row gap-4 justify-between">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-intenso-text-muted w-4 h-4" />
+              <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-intenso-text-muted w-4 h-4" />
               <Input
                 placeholder="Buscar campaña o marca..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 border-gray-200 focus-visible:ring-intenso-purple-500"
+                className="pl-10 border-gray-200 focus-visible:ring-intenso-magenta-500"
               />
             </div>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -196,29 +204,40 @@ const AdminCampaigns: React.FC = () => {
       </Card>
 
       {/* Table */}
-      <Card className="border-slate-200 shadow-sm">
-        <CardHeader>
-          <CardTitle className="text-slate-900 text-base sm:text-lg">
-            Campañas ({filteredCampaigns.length})
-          </CardTitle>
+      <Card className="border-none shadow-sm overflow-hidden bg-white/50 backdrop-blur-sm">
+        <CardHeader className="border-b border-gray-100 pb-4 bg-gradient-to-r from-white/80 to-transparent">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-intenso-text text-base sm:text-lg font-display flex items-center gap-2">
+              <div className="w-1.5 h-6 bg-gradient-to-b from-intenso-magenta-500 to-intenso-pink-500 rounded-full"></div>
+              Campañas ({filteredCampaigns.length})
+            </CardTitle>
+            <Badge
+              variant="secondary"
+              className="bg-intenso-magenta-50 text-intenso-magenta-700 border border-intenso-magenta-200 font-medium"
+            >
+              {filteredCampaigns.length} total
+            </Badge>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto -mx-6 sm:mx-0">
             <div className="inline-block min-w-full align-middle">
               <Table>
                 <TableHeader>
-                  <TableRow className="border-slate-200">
-                    <TableHead className="text-slate-600">Campaña</TableHead>
-                    <TableHead className="text-slate-600 hidden md:table-cell">
+                  <TableRow className="border-gray-100 hover:bg-transparent">
+                    <TableHead className="text-intenso-text-muted font-medium">
+                      Campaña
+                    </TableHead>
+                    <TableHead className="text-intenso-text-muted font-medium hidden md:table-cell">
                       Marca
                     </TableHead>
-                    <TableHead className="text-slate-600 hidden sm:table-cell">
+                    <TableHead className="text-intenso-text-muted font-medium hidden sm:table-cell">
                       Presupuesto
                     </TableHead>
-                    <TableHead className="text-slate-600 hidden lg:table-cell">
+                    <TableHead className="text-intenso-text-muted font-medium hidden lg:table-cell">
                       Creadores
                     </TableHead>
-                    <TableHead className="text-slate-600 hidden xl:table-cell">
+                    <TableHead className="text-intenso-text-muted font-medium hidden xl:table-cell">
                       Fechas
                     </TableHead>
                     <TableHead className="text-slate-600">Estado</TableHead>
@@ -233,30 +252,61 @@ const AdminCampaigns: React.FC = () => {
                       key={campaign.id}
                       className="border-gray-100 hover:bg-gray-50/50 transition-colors"
                     >
-                      <TableCell className="font-medium text-intenso-text">
+                      <TableCell className="font-bold text-intenso-text">
                         {campaign.title}
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="hidden md:table-cell">
                         <div className="flex items-center gap-2 text-intenso-text-muted">
-                          <Users className="w-4 h-4 text-gray-400" />
-                          {campaign.marcaName}
+                          <UsersIcon className="w-4 h-4 opacity-60" />
+                          <span className="text-sm">{campaign.marcaName}</span>
                         </div>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="hidden sm:table-cell">
+                        <div className="flex items-center gap-1 text-intenso-text font-bold">
+                          <CurrencyDollarIcon className="w-4 h-4 text-intenso-orange-500" />
+                          ${(campaign.budget / 1000).toFixed(0)}K
+                        </div>
+                      </TableCell>
+                      <TableCell className="hidden lg:table-cell">
                         <Badge
                           variant="secondary"
-                          className={`${getStatusColor(campaign.status)} border-0 font-medium`}
+                          className="bg-intenso-teal-50 text-intenso-teal-700 border border-intenso-teal-200 font-medium"
                         >
-                          {getStatusLabel(campaign.status)}
+                          {campaign.creadores.length} creadores
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-intenso-text">
+                      <TableCell className="hidden xl:table-cell text-sm text-intenso-text-muted">
                         {new Date(campaign.startDate).toLocaleDateString()}
                       </TableCell>
                       <TableCell>
-                        <div className="flex items-center gap-1 text-intenso-text font-medium">
-                          <DollarSign className="w-3.5 h-3.5 text-intenso-text-muted" />
-                          {campaign.budget.toLocaleString()}
+                        <div className="flex items-center gap-2.5">
+                          <div
+                            className="w-3.5 h-3.5 rounded-full"
+                            style={{
+                              backgroundColor:
+                                campaign.status === "activa"
+                                  ? "#0e8d8d"
+                                  : campaign.status === "en_progreso"
+                                    ? "#8a3bc0"
+                                    : campaign.status === "completada"
+                                      ? "#f15ba6"
+                                      : "#faba5f",
+                              boxShadow: `0 0 0 2px ${
+                                campaign.status === "activa"
+                                  ? "rgba(14, 141, 141, 0.2)"
+                                  : campaign.status === "en_progreso"
+                                    ? "rgba(138, 59, 192, 0.2)"
+                                    : campaign.status === "completada"
+                                      ? "rgba(241, 91, 166, 0.2)"
+                                      : "rgba(250, 186, 95, 0.2)"
+                              }, 0 1px 2px rgba(0, 0, 0, 0.1)`,
+                            }}
+                          ></div>
+                          <Badge
+                            className={`${getStatusColor(campaign.status)} font-medium`}
+                          >
+                            {getStatusLabel(campaign.status)}
+                          </Badge>
                         </div>
                       </TableCell>
                       <TableCell className="text-right">
@@ -264,9 +314,9 @@ const AdminCampaigns: React.FC = () => {
                           variant="ghost"
                           size="sm"
                           onClick={() => viewDetails(campaign)}
-                          className="hover:text-intenso-purple-600 hover:bg-intenso-purple-50"
+                          className="hover:text-intenso-magenta-600 hover:bg-intenso-magenta-50"
                         >
-                          <Eye className="w-4 h-4" />
+                          <EyeIcon className="w-4 h-4" />
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -434,9 +484,12 @@ const AdminCampaigns: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="pt-4 border-t flex gap-3">
-                  <Button variant="outline" className="flex-1">
-                    <Edit className="w-4 h-4 mr-2" />
+                <div className="pt-4 border-t border-gray-200 flex gap-3">
+                  <Button
+                    variant="outline"
+                    className="flex-1 border-intenso-teal-200 text-intenso-teal-700 hover:bg-intenso-teal-50"
+                  >
+                    <PencilSquareIcon className="w-4 h-4 mr-2" />
                     Editar Campaña
                   </Button>
                   <Select defaultValue={selectedCampaign.status}>
@@ -450,8 +503,11 @@ const AdminCampaigns: React.FC = () => {
                       <SelectItem value="borrador">Borrador</SelectItem>
                     </SelectContent>
                   </Select>
-                  <Button variant="outline" className="text-red-600">
-                    <Trash2 className="w-4 h-4 mr-2" />
+                  <Button
+                    variant="outline"
+                    className="text-red-600 border-red-200 hover:bg-red-50"
+                  >
+                    <TrashIcon className="w-4 h-4 mr-2" />
                     Eliminar
                   </Button>
                 </div>

@@ -9,19 +9,20 @@ import {
   AvatarImage,
 } from "@/app/components/ui/avatar";
 import {
-  LayoutDashboard,
-  Users,
-  Megaphone,
-  ShoppingBag,
-  LogOut,
-  Briefcase,
-  BarChart3,
-  Menu,
-  X,
-  Bell,
-  Search,
-  Settings,
-} from "lucide-react";
+  Squares2X2Icon,
+  UsersIcon,
+  MegaphoneIcon,
+  ShoppingBagIcon,
+  ArrowRightOnRectangleIcon,
+  BriefcaseIcon,
+  ChartBarIcon,
+  Bars3Icon,
+  XMarkIcon,
+  BellIcon,
+  MagnifyingGlassIcon,
+  CogIcon,
+  PresentationChartLineIcon,
+} from "@heroicons/react/24/solid";
 
 type NavItem = {
   name: string;
@@ -82,29 +83,37 @@ const DashboardLayout: React.FC = () => {
 
     if (user.type === "admin") {
       return [
-        { name: "Dashboard", icon: LayoutDashboard, to: paths.admin.root },
-        { name: "Marcas", icon: Briefcase, to: paths.admin.marcas },
-        { name: "Creadores", icon: Users, to: paths.admin.creadores },
-        { name: "Campañas", icon: Megaphone, to: paths.admin.campaigns },
-        { name: "Servicios", icon: ShoppingBag, to: paths.admin.services },
-        { name: "Compras", icon: BarChart3, to: paths.admin.purchases },
-        //{ name: "Métricas", icon: BarChart3, to: paths.admin.metrics },
+        { name: "Dashboard", icon: Squares2X2Icon, to: paths.admin.root },
+        { name: "Marcas", icon: BriefcaseIcon, to: paths.admin.marcas },
+        { name: "Creadores", icon: UsersIcon, to: paths.admin.creadores },
+        { name: "Campañas", icon: MegaphoneIcon, to: paths.admin.campaigns },
+        { name: "Servicios", icon: ShoppingBagIcon, to: paths.admin.services },
+        { name: "Compras", icon: ChartBarIcon, to: paths.admin.purchases },
+        {
+          name: "Métricas",
+          icon: PresentationChartLineIcon,
+          to: paths.admin.metrics,
+        },
       ];
     }
 
     if (user.type === "marca") {
       return [
-        { name: "Dashboard", icon: LayoutDashboard, to: paths.marca.root },
-        { name: "Campañas", icon: Megaphone, to: paths.marca.campaigns },
-        { name: "Creadores", icon: Users, to: paths.marca.creators },
-        { name: "Servicios", icon: ShoppingBag, to: paths.marca.services },
+        { name: "Dashboard", icon: Squares2X2Icon, to: paths.marca.root },
+        { name: "Campañas", icon: MegaphoneIcon, to: paths.marca.campaigns },
+        { name: "Creadores", icon: UsersIcon, to: paths.marca.creators },
+        { name: "Servicios", icon: ShoppingBagIcon, to: paths.marca.services },
       ];
     }
 
     return [
-      { name: "Dashboard", icon: LayoutDashboard, to: paths.creador.root },
-      { name: "Mis Campañas", icon: Megaphone, to: paths.creador.campaigns },
-      { name: "Marcas", icon: Users, to: paths.creador.brands },
+      { name: "Dashboard", icon: Squares2X2Icon, to: paths.creador.root },
+      {
+        name: "Mis Campañas",
+        icon: MegaphoneIcon,
+        to: paths.creador.campaigns,
+      },
+      { name: "Marcas", icon: UsersIcon, to: paths.creador.brands },
     ];
   }, [user]);
 
@@ -115,43 +124,50 @@ const DashboardLayout: React.FC = () => {
     navigate(paths.login, { replace: true });
   };
 
-  const currentPathName =
-    navigation.find((item) => location.pathname.startsWith(item.to))?.name ||
-    "Dashboard";
-
   return (
     <div
       className={`flex h-screen w-full overflow-hidden bg-gradient-to-br from-intenso-purple via-[#B447CC] to-[#F15BA6] relative font-sans`}
     >
       {/* Dynamic Background Elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-white/10 blur-[100px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-[#FAFAFA]/10 blur-[100px]" />
+        {/* Deep Purple/Magenta Base */}
+        <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-intenso-purple-600/40 blur-[120px] mix-blend-overlay" />
+        <div className="absolute top-[40%] right-[-20%] w-[60%] h-[60%] rounded-full bg-intenso-magenta-500/30 blur-[120px] mix-blend-overlay" />
+
+        {/* Branding Accents (Teal & Orange) to pop through glass */}
+        <div className="absolute bottom-[-10%] left-[10%] w-[40%] h-[40%] rounded-full bg-intenso-teal-500/30 blur-[100px] mix-blend-screen" />
+        <div className="absolute top-[10%] right-[10%] w-[30%] h-[30%] rounded-full bg-intenso-orange-500/30 blur-[80px] mix-blend-screen" />
+
+        {/* Texture Pattern */}
         <div
-          className="absolute inset-0 opacity-[0.05] bg-[url('/img/isotipo.png')] bg-repeat space mix-blend-overlay"
-          style={{ backgroundSize: "200px" }}
+          className="absolute inset-0 opacity-[0.03] bg-[url('/img/isotipo.png')] bg-repeat space mix-blend-overlay"
+          style={{ backgroundSize: "180px" }}
         />
       </div>
 
       {/* Mobile Header */}
       <header className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white/10 backdrop-blur-md border-b border-white/10 z-50 flex items-center justify-between px-4">
-        <div className="flex items-center gap-3">
+        <button
+          onClick={() => navigate(homePath)}
+          className="flex items-center"
+        >
           <img
-            src="/img/isotipo.png"
-            alt="logo"
-            className="h-8 w-8 brightness-0 invert"
+            src="/img/logo.png"
+            alt="Intenso Logo"
+            className="h-8 w-auto object-contain brightness-0 invert"
           />
-          <span className="font-display font-bold text-xl text-white">
-            intenso
-          </span>
-        </div>
+        </button>
 
         <button
           type="button"
           onClick={() => setIsMobileMenuOpen((v) => !v)}
           className="p-2 text-white hover:bg-white/10 rounded-xl transition-colors"
         >
-          {isMobileMenuOpen ? <X /> : <Menu />}
+          {isMobileMenuOpen ? (
+            <XMarkIcon className="w-6 h-6" />
+          ) : (
+            <Bars3Icon className="w-6 h-6" />
+          )}
         </button>
       </header>
 
@@ -167,33 +183,27 @@ const DashboardLayout: React.FC = () => {
       <aside
         className={`
           fixed lg:static top-0 left-0 h-full w-72 z-50 transition-transform duration-300 ease-out
-          ${isMobileMenuOpen ? "translate-x-0 bg-[#2A1B45]" : "-translate-x-full"}
-          lg:translate-x-0 lg:bg-transparent lg:w-72 lg:flex-shrink-0
+          ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}
+          lg:translate-x-0 lg:w-72 lg:flex-shrink-0
           flex flex-col p-6
         `}
       >
         {/* Brand Logo */}
-        <div className="h-20 flex items-center mb-6 pl-2">
+        <div className="h-28 flex items-center justify-center mb-4">
           <button
             onClick={() => navigate(homePath)}
-            className="flex items-center gap-3 group"
+            className="flex items-center justify-center w-full"
           >
-            <div className="relative">
-              <img
-                src="/img/isotipo.png"
-                className="w-10 h-10 object-contain brightness-0 invert shadow-lg transition-transform group-hover:scale-110"
-                alt="logo"
-              />
-              <div className="absolute inset-0 bg-white/30 blur-lg rounded-full opacity-0 group-hover:opacity-50 transition-opacity" />
-            </div>
-            <span className="font-display font-bold text-3xl text-white tracking-tight">
-              intenso
-            </span>
+            <img
+              src="/img/logo.png"
+              className="h-20 w-auto object-contain brightness-0 invert transition-transform hover:scale-105"
+              alt="Intenso Logo"
+            />
           </button>
         </div>
 
         {/* Navigation Items */}
-        <nav className="flex-1 space-y-2 overflow-y-auto scrollbar-hide">
+        <nav className="flex-1 space-y-2 overflow-y-auto overflow-x-hidden custom-scrollbar pr-2">
           {navigation.map((item) => {
             const Icon = item.icon;
             // Check if active (exact match for root, or starts with for others)
@@ -211,7 +221,7 @@ const DashboardLayout: React.FC = () => {
                   relative flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300 group
                   ${
                     isActive
-                      ? "bg-white shadow-[0_8px_20px_-6px_rgba(0,0,0,0.2)] text-intenso-purple font-bold translate-x-2"
+                      ? "bg-white shadow-[0_8px_20px_-6px_rgba(0,0,0,0.2)] text-intenso-purple font-bold"
                       : "text-white/70 hover:bg-white/10 hover:text-white"
                   }
                 `}
@@ -240,13 +250,13 @@ const DashboardLayout: React.FC = () => {
               }}
               className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-white/60 hover:text-white transition-colors"
             >
-              <Settings className="w-5 h-5" />
+              <CogIcon className="w-5 h-5" />
             </button>
             <button
               onClick={handleLogout}
               className="p-2 rounded-xl bg-white/5 hover:bg-red-500/20 text-white/60 hover:text-red-200 transition-colors ml-auto"
             >
-              <LogOut className="w-5 h-5" />
+              <ArrowRightOnRectangleIcon className="w-5 h-5" />
             </button>
           </div>
 
@@ -271,21 +281,21 @@ const DashboardLayout: React.FC = () => {
 
       {/* Main Content Area - Rounded Card */}
       <main className="flex-1 relative z-10 p-2 lg:p-4 lg:pl-0 h-full overflow-hidden">
-        <div className="bg-white/85 backdrop-blur-xl w-full h-full rounded-[20px] lg:rounded-[32px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] relative overflow-hidden flex flex-col border border-white/50">
-          {/* Floating Header inside Content Area */}
-          <div className="h-16 lg:h-20 min-h-[64px] px-6 lg:px-8 py-4 flex items-center justify-between bg-white/40 backdrop-blur-md border-b border-white/40 z-20 sticky top-0">
-            <div className="flex items-center gap-4">
-              {/* Show mobile menu trigger only on mobile within wrapper if needed, but standard header handles it.
-                         Here we just show title. */}
-              <h2 className="text-xl font-display font-bold text-slate-800 hidden md:block">
-                {currentPathName}
-              </h2>
-            </div>
+        <div className="group/main-card bg-gradient-to-br from-white/95 via-white/85 to-white/70 backdrop-blur-2xl w-full h-full rounded-[20px] lg:rounded-[32px] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)] relative overflow-hidden flex flex-col border border-white/60 box-border ring-1 ring-white/40">
+          {/* Decorative Gloss Line at top */}
+          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white to-transparent opacity-80" />
 
-            <div className="flex items-center gap-3 lg:gap-6">
+          {/* Subtle inner glow/gradient */}
+          <div className="absolute -top-[200px] -right-[200px] w-[400px] h-[400px] bg-intenso-purple-500/5 rounded-full blur-3xl pointer-events-none" />
+
+          {/* Floating Header inside Content Area */}
+          <div className="h-16 lg:h-20 min-h-[64px] px-6 lg:px-8 py-4 flex items-center justify-end bg-white/40 backdrop-blur-md border-b border-white/30 z-20 sticky top-0 relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-white/50 to-transparent pointer-events-none" />{" "}
+            {/* Header distinct sheen */}
+            <div className="flex items-center gap-3 lg:gap-6 relative z-10">
               {/* Search Bar */}
-              <div className="hidden md:flex items-center bg-white/60 rounded-full px-4 py-2 w-64 border border-white/50 focus-within:border-intenso-purple/50 focus-within:bg-white/80 transition-all shadow-sm">
-                <Search className="w-4 h-4 text-gray-500" />
+              <div className="hidden md:flex items-center bg-white/60 rounded-full px-4 py-2 w-64 border border-white/50 focus-within:border-intenso-purple/50 focus-within:bg-white/90 transition-all shadow-sm focus-within:shadow-md focus-within:ring-2 focus-within:ring-intenso-purple/10">
+                <MagnifyingGlassIcon className="w-4 h-4 text-gray-500" />
                 <input
                   type="text"
                   placeholder="Buscar..."
@@ -294,7 +304,7 @@ const DashboardLayout: React.FC = () => {
               </div>
 
               <button className="relative p-2 text-gray-600 hover:bg-white/50 rounded-full transition-colors">
-                <Bell className="w-5 h-5" />
+                <BellIcon className="w-5 h-5" />
                 <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-red-500 border border-white"></span>
               </button>
 

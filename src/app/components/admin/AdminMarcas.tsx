@@ -37,7 +37,13 @@ import {
 } from "@/app/components/ui/avatar";
 import { mockMarcas, mockCampaigns } from "@/data/mockData";
 import { MarcaProfile } from "@/types";
-import { Search, Eye, Edit, Ban, Building2 } from "lucide-react";
+import {
+  MagnifyingGlassIcon,
+  EyeIcon,
+  PencilSquareIcon,
+  NoSymbolIcon,
+  BuildingOfficeIcon,
+} from "@heroicons/react/24/solid";
 
 const AdminMarcas: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -84,11 +90,11 @@ const AdminMarcas: React.FC = () => {
       </div>
 
       {/* Filters */}
-      <Card className="mb-4 sm:mb-6 border-none shadow-sm">
+      <Card className="mb-4 sm:mb-6 border-none shadow-sm bg-white/50 backdrop-blur-sm">
         <CardContent className="pt-4 sm:pt-6">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-intenso-text-muted w-4 h-4" />
+              <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-intenso-text-muted w-4 h-4" />
               <Input
                 placeholder="Buscar por nombre, empresa o email..."
                 value={searchQuery}
@@ -114,11 +120,20 @@ const AdminMarcas: React.FC = () => {
       </Card>
 
       {/* Table */}
-      <Card className="border-none shadow-sm overflow-hidden">
-        <CardHeader className="border-b border-gray-100/50 pb-4">
-          <CardTitle className=" text-intenso-text text-base sm:text-lg font-display">
-            Marcas Registradas ({filteredMarcas.length})
-          </CardTitle>
+      <Card className="border-none shadow-sm overflow-hidden bg-white/50 backdrop-blur-sm">
+        <CardHeader className="border-b border-gray-100 pb-4 bg-gradient-to-r from-white/80 to-transparent">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-intenso-text text-base sm:text-lg font-display flex items-center gap-2">
+              <div className="w-1.5 h-6 bg-gradient-to-b from-intenso-purple-500 to-intenso-pink-500 rounded-full"></div>
+              Marcas Registradas ({filteredMarcas.length})
+            </CardTitle>
+            <Badge
+              variant="secondary"
+              className="bg-intenso-purple-50 text-intenso-purple-700 border border-intenso-purple-200 font-medium"
+            >
+              {filteredMarcas.length} total
+            </Badge>
+          </div>
         </CardHeader>
         <CardContent className="p-0">
           <div className="overflow-x-auto">
@@ -184,7 +199,7 @@ const AdminMarcas: React.FC = () => {
                             variant="outline"
                             className="text-intenso-text-muted border-gray-200 bg-gray-50 font-normal"
                           >
-                            <Building2 className="w-3 h-3 mr-1 opacity-70" />
+                            <BuildingOfficeIcon className="w-3 h-3 mr-1 opacity-70" />
                             {marca.industry}
                           </Badge>
                         </TableCell>
@@ -194,13 +209,13 @@ const AdminMarcas: React.FC = () => {
                         <TableCell className="hidden sm:table-cell">
                           <Badge
                             variant="secondary"
-                            className="bg-intenso-teal-50 text-intenso-teal-700 hover:bg-intenso-teal-100 border-0"
+                            className="bg-intenso-teal-50 text-intenso-teal-700 hover:bg-intenso-teal-100 border-0 font-medium"
                           >
                             {campaigns.length} campañas
                           </Badge>
                         </TableCell>
                         <TableCell className="hidden sm:table-cell">
-                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700 border border-green-100">
+                          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-pink-50 text-intenso-pink-700 border border-pink-100">
                             Activo
                           </span>
                         </TableCell>
@@ -212,14 +227,14 @@ const AdminMarcas: React.FC = () => {
                               onClick={() => viewDetails(marca)}
                               className="hover:text-intenso-purple-600 hover:bg-intenso-purple-50"
                             >
-                              <Eye className="w-4 h-4" />
+                              <EyeIcon className="w-4 h-4" />
                             </Button>
                             <Button
                               variant="ghost"
                               size="sm"
                               className="hover:text-intenso-teal-600 hover:bg-intenso-teal-50"
                             >
-                              <Edit className="w-4 h-4" />
+                              <PencilSquareIcon className="w-4 h-4" />
                             </Button>
                           </div>
                         </TableCell>
@@ -240,20 +255,20 @@ const AdminMarcas: React.FC = () => {
             <>
               <DialogHeader>
                 <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
-                  <Avatar className="w-16 h-16 sm:w-20 sm:h-20 border-2 border-slate-100">
+                  <Avatar className="w-16 h-16 sm:w-20 sm:h-20 border-2 border-intenso-purple-100 shadow-sm">
                     <AvatarImage src={selectedMarca.avatar} />
-                    <AvatarFallback className="bg-slate-200 text-slate-700">
-                      <Building2 className="w-8 h-8 sm:w-10 sm:h-10" />
+                    <AvatarFallback className="bg-gradient-to-br from-intenso-purple-100 to-intenso-pink-100 text-intenso-purple-700">
+                      <BuildingOfficeIcon className="w-8 h-8 sm:w-10 sm:h-10" />
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1">
-                    <DialogTitle className="text-xl sm:text-2xl text-slate-900">
+                    <DialogTitle className="text-xl sm:text-2xl text-intenso-text font-display">
                       {selectedMarca.companyName}
                     </DialogTitle>
                     <DialogDescription>
                       <Badge
                         variant="secondary"
-                        className="mt-2 bg-slate-100 text-slate-700"
+                        className="mt-2 bg-intenso-purple-50 text-intenso-purple-700 border border-intenso-purple-100"
                       >
                         {selectedMarca.industry}
                       </Badge>
@@ -265,34 +280,34 @@ const AdminMarcas: React.FC = () => {
               <div className="space-y-6 py-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <h4 className="text-sm font-semibold text-slate-600 mb-1">
+                    <h4 className="text-sm font-semibold text-intenso-text-muted mb-1">
                       Persona de Contacto
                     </h4>
-                    <p className="text-slate-900 text-sm sm:text-base">
+                    <p className="text-intenso-text text-sm sm:text-base">
                       {selectedMarca.name}
                     </p>
                   </div>
                   <div>
-                    <h4 className="text-sm font-semibold text-slate-600 mb-1">
+                    <h4 className="text-sm font-semibold text-intenso-text-muted mb-1">
                       Email
                     </h4>
-                    <p className="text-slate-900 text-sm sm:text-base break-all">
+                    <p className="text-intenso-text text-sm sm:text-base break-all">
                       {selectedMarca.email}
                     </p>
                   </div>
                   <div>
-                    <h4 className="text-sm font-semibold text-slate-600 mb-1">
+                    <h4 className="text-sm font-semibold text-intenso-text-muted mb-1">
                       Sitio Web
                     </h4>
-                    <p className="text-slate-900 text-sm sm:text-base break-all">
+                    <p className="text-intenso-text text-sm sm:text-base break-all">
                       {selectedMarca.website || "No especificado"}
                     </p>
                   </div>
                   <div>
-                    <h4 className="text-sm font-semibold text-slate-600 mb-1">
+                    <h4 className="text-sm font-semibold text-intenso-text-muted mb-1">
                       Fecha de Registro
                     </h4>
-                    <p className="text-slate-900 text-sm sm:text-base">
+                    <p className="text-intenso-text text-sm sm:text-base">
                       {new Date(selectedMarca.createdAt).toLocaleDateString(
                         "es-ES",
                         {
@@ -306,16 +321,16 @@ const AdminMarcas: React.FC = () => {
                 </div>
 
                 <div>
-                  <h4 className="text-sm font-semibold text-slate-600 mb-2">
+                  <h4 className="text-sm font-semibold text-intenso-text-muted mb-2">
                     Descripción
                   </h4>
-                  <p className="text-slate-700 text-sm sm:text-base">
+                  <p className="text-intenso-text text-sm sm:text-base">
                     {selectedMarca.description}
                   </p>
                 </div>
 
                 <div>
-                  <h4 className="text-sm font-semibold text-slate-600 mb-3">
+                  <h4 className="text-sm font-semibold text-intenso-text-muted mb-3">
                     Campañas ({marcaCampaigns.length})
                   </h4>
                   {marcaCampaigns.length > 0 ? (
@@ -323,25 +338,25 @@ const AdminMarcas: React.FC = () => {
                       {marcaCampaigns.map((campaign) => (
                         <div
                           key={campaign.id}
-                          className="p-3 border border-slate-200 rounded-lg"
+                          className="p-3 border border-gray-100 rounded-lg bg-white/50 hover:bg-white/80 transition-colors"
                         >
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                            <span className="font-medium text-slate-900 text-sm sm:text-base">
+                            <span className="font-medium text-intenso-text text-sm sm:text-base">
                               {campaign.title}
                             </span>
                             <Badge
                               className={
                                 campaign.status === "activa"
-                                  ? "bg-green-100 text-green-700"
+                                  ? "bg-intenso-teal-50 text-intenso-teal-700 border border-intenso-teal-200"
                                   : campaign.status === "en_progreso"
-                                    ? "bg-blue-100 text-blue-700"
-                                    : "bg-gray-100 text-gray-700"
+                                    ? "bg-intenso-purple-50 text-intenso-purple-700 border border-intenso-purple-200"
+                                    : "bg-intenso-pink-50 text-intenso-pink-700 border border-intenso-pink-200"
                               }
                             >
                               {campaign.status}
                             </Badge>
                           </div>
-                          <div className="text-xs sm:text-sm text-slate-600 mt-1">
+                          <div className="text-xs sm:text-sm text-intenso-text-muted mt-1">
                             ${campaign.budget.toLocaleString()} •{" "}
                             {campaign.creadores.length} creadores
                           </div>
@@ -349,25 +364,25 @@ const AdminMarcas: React.FC = () => {
                       ))}
                     </div>
                   ) : (
-                    <p className="text-slate-500 text-sm">
+                    <p className="text-intenso-text-muted text-sm">
                       No tiene campañas registradas
                     </p>
                   )}
                 </div>
 
-                <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row gap-3">
+                <div className="pt-4 border-t border-gray-200 flex flex-col sm:flex-row gap-3">
                   <Button
                     variant="outline"
-                    className="flex-1 border-slate-200 hover:bg-slate-50 text-sm sm:text-base"
+                    className="flex-1 border-intenso-teal-200 text-intenso-teal-700 hover:bg-intenso-teal-50 hover:text-intenso-teal-800 text-sm sm:text-base"
                   >
-                    <Edit className="w-4 h-4 mr-2" />
+                    <PencilSquareIcon className="w-4 h-4 mr-2" />
                     Editar Información
                   </Button>
                   <Button
                     variant="outline"
-                    className="flex-1 text-red-600 border-red-200 hover:bg-red-50 text-sm sm:text-base"
+                    className="flex-1 text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300 text-sm sm:text-base"
                   >
-                    <Ban className="w-4 h-4 mr-2" />
+                    <NoSymbolIcon className="w-4 h-4 mr-2" />
                     Bloquear Marca
                   </Button>
                 </div>

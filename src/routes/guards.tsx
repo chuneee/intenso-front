@@ -19,21 +19,40 @@ export const getDefaultPathForRole = (role: UserType) => {
 };
 
 export function RequireAuth({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
   const location = useLocation();
 
+  if (isLoading) {
+    return null; // O puedes retornar un spinner/loading component
+  }
+
   if (!isAuthenticated) {
-    return <Navigate to={paths.login} replace state={{ from: location.pathname }} />;
+    return (
+      <Navigate to={paths.login} replace state={{ from: location.pathname }} />
+    );
   }
 
   return <>{children}</>;
 }
 
-export function RequireRole({ role, children }: { role: UserType; children: React.ReactNode }) {
-  const { user } = useAuth();
+export function RequireRole({
+  role,
+  children,
+}: {
+  role: UserType;
+  children: React.ReactNode;
+}) {
+  const { user, isLoading } = useAuth();
+  const location = useLocation();
+
+  if (isLoading) {
+    return null; // O puedes retornar un spinner/loading component
+  }
 
   if (!user) {
-    return <Navigate to={paths.login} replace />;
+    return (
+      <Navigate to={paths.login} replace state={{ from: location.pathname }} />
+    );
   }
 
   if (user.type !== role) {

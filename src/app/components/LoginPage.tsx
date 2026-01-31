@@ -4,8 +4,17 @@ import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { useAuth } from "@/context/AuthContext";
-import { mockAdmin } from "@/data/mockData";
-import { Eye, EyeOff, ChevronRight, Mail, Lock, Shield } from "lucide-react";
+import { mockAdmin, mockMarcas, mockCreadores } from "@/data/mockData";
+import {
+  Eye,
+  EyeOff,
+  ChevronRight,
+  Mail,
+  Lock,
+  Shield,
+  Building2,
+  Sparkles,
+} from "lucide-react";
 
 const SHOW_DEV_SHORTCUT = import.meta.env.DEV;
 
@@ -19,6 +28,22 @@ const LoginPage: React.FC = () => {
       return;
     setError("");
     login(mockAdmin.email, "admin123", false); // Using the known mock password
+  };
+
+  const handleQuickMarcaAccess = () => {
+    if (import.meta.env.PROD && !import.meta.env.VITE_ENABLE_ADMIN_SHORTCUT)
+      return;
+    setError("");
+    const marca = mockMarcas[0]; // Primera marca
+    login(marca.email, "marca123", false);
+  };
+
+  const handleQuickCreadorAccess = () => {
+    if (import.meta.env.PROD && !import.meta.env.VITE_ENABLE_ADMIN_SHORTCUT)
+      return;
+    setError("");
+    const creador = mockCreadores[0]; // Primer creador
+    login(creador.email, "creador123", false);
   };
 
   const [email, setEmail] = useState("");
@@ -139,24 +164,46 @@ const LoginPage: React.FC = () => {
 
                 {SHOW_DEV_SHORTCUT && (
                   <div className="mt-6 rounded-2xl border border-intenso-border bg-intenso-teal-soft p-4 animate-in fade-in zoom-in duration-300">
-                    <div className="flex items-start justify-between gap-3">
+                    <div className="flex flex-col gap-3">
                       <div>
                         <div className="text-[11px] font-bold tracking-wide text-intenso-teal-700 uppercase">
                           Acceso Rápido (DEMO)
                         </div>
                         <div className="mt-1 text-sm text-intenso-text-muted">
-                          Entra directo al panel de control como administrador.
+                          Entra directo al panel de control.
                         </div>
                       </div>
-                      <Button
-                        type="button"
-                        variant="secondary"
-                        onClick={handleQuickAdminAccess}
-                        className="shrink-0 rounded-xl bg-white hover:bg-white text-intenso-teal shadow-sm border border-intenso-teal/20 hover:border-intenso-teal hover:shadow-md transition-all active:scale-95"
-                      >
-                        <Shield className="size-4 mr-2" />
-                        Admin
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button
+                          type="button"
+                          variant="secondary"
+                          onClick={handleQuickAdminAccess}
+                          className="flex-1 rounded-xl bg-white hover:bg-white text-intenso-teal shadow-sm border border-intenso-teal/20 hover:border-intenso-teal hover:shadow-md transition-all active:scale-95"
+                        >
+                          <Shield className="size-4 mr-2" />
+                          Admin
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={handleQuickMarcaAccess}
+                          className="flex-1 rounded-xl text-intenso-purple border-intenso-purple/20 hover:bg-intenso-purple-50 hover:text-intenso-purple-600 hover:border-intenso-purple/40 transition-all active:scale-95"
+                        >
+                          <Building2 className="size-4 mr-1.5" />
+                          <span className="text-xs">Marca</span>
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={handleQuickCreadorAccess}
+                          className="flex-1 rounded-xl text-intenso-orange border-intenso-orange/20 hover:bg-intenso-orange-50 hover:text-intenso-orange-600 hover:border-intenso-orange/40 transition-all active:scale-95"
+                        >
+                          <Sparkles className="size-4 mr-1.5" />
+                          <span className="text-xs">Creador</span>
+                        </Button>
+                      </div>
                     </div>
                     <div className="mt-3 flex items-center gap-2 text-xs text-intenso-text-muted/80 font-mono bg-white/50 p-1.5 rounded-lg border border-transparent hover:border-intenso-teal/20 transition-colors">
                       <span className="select-all">{mockAdmin.email}</span>

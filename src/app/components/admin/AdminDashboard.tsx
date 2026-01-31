@@ -23,7 +23,8 @@ import {
   mockCampaigns,
   mockServicePurchases,
 } from "@/data/mockData";
-import { Sparkles, ArrowRight, DollarSign } from "lucide-react";
+import { ArrowRight, DollarSign } from "lucide-react";
+import { SparklesIcon } from "@heroicons/react/24/solid";
 
 const AdminDashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -109,7 +110,7 @@ const AdminDashboard: React.FC = () => {
           className="hidden sm:flex border-intenso-teal-200 text-intenso-teal-700 hover:bg-intenso-teal-50 hover:text-intenso-teal-800"
           onClick={() => navigate("/admin/campaigns")}
         >
-          <Sparkles className="w-4 h-4 mr-2" />
+          <SparklesIcon className="w-4 h-4 mr-2" />
           Nueva Campaña
         </Button>
       </div>
@@ -258,14 +259,14 @@ const AdminDashboard: React.FC = () => {
 
               <div className="flex items-center justify-between p-2 hover:bg-white/40 rounded-lg transition-colors">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-purple-100/50 flex items-center justify-center text-intenso-purple-600">
+                  <div className="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center text-intenso-purple-600 border border-purple-100">
                     <span className="text-xs font-bold">P</span>
                   </div>
                   <span className="text-sm font-medium text-intenso-text">
                     En Progreso
                   </span>
                 </div>
-                <span className="text-sm font-semibold text-intenso-text">
+                <span className="text-sm font-semibold text-intenso-purple-600 bg-purple-50 px-2 py-0.5 rounded-md">
                   {
                     mockCampaigns.filter((c) => c.status === "en_progreso")
                       .length
@@ -275,28 +276,28 @@ const AdminDashboard: React.FC = () => {
 
               <div className="flex items-center justify-between p-2 hover:bg-white/40 rounded-lg transition-colors">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-green-100/50 flex items-center justify-center text-green-600">
+                  <div className="w-8 h-8 rounded-full bg-pink-50 flex items-center justify-center text-intenso-pink-600 border border-pink-100">
                     <span className="text-xs font-bold">C</span>
                   </div>
                   <span className="text-sm font-medium text-intenso-text">
                     Completadas
                   </span>
                 </div>
-                <span className="text-sm font-semibold text-intenso-text">
+                <span className="text-sm font-semibold text-intenso-pink-600 bg-pink-50 px-2 py-0.5 rounded-md">
                   {completedCampaigns}
                 </span>
               </div>
 
               <div className="flex items-center justify-between p-2 hover:bg-white/40 rounded-lg transition-colors">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-yellow-100/50 flex items-center justify-center text-yellow-600">
+                  <div className="w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center text-intenso-orange-600 border border-orange-100">
                     <span className="text-xs font-bold">B</span>
                   </div>
                   <span className="text-sm font-medium text-intenso-text">
                     Borradores
                   </span>
                 </div>
-                <span className="text-sm font-semibold text-intenso-text">
+                <span className="text-sm font-semibold text-intenso-orange-600 bg-orange-50 px-2 py-0.5 rounded-md">
                   {mockCampaigns.filter((c) => c.status === "borrador").length}
                 </span>
               </div>
@@ -320,15 +321,34 @@ const AdminDashboard: React.FC = () => {
                 >
                   <div className="flex items-center gap-3 min-w-0 flex-1">
                     <div
-                      className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm ${
+                      className={`relative w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg ${
                         index === 0
-                          ? "bg-gradient-to-br from-intenso-purple-500 to-intenso-pink-500 text-white"
+                          ? "bg-white"
                           : index === 1
-                            ? "bg-gradient-to-br from-intenso-teal-500 to-emerald-400 text-white"
-                            : "bg-gray-100 text-gray-500"
+                            ? "bg-white"
+                            : "bg-gray-100 border border-gray-200"
                       }`}
                     >
-                      <span className="text-sm font-bold">#{index + 1}</span>
+                      {index === 0 && (
+                        <div className="absolute inset-0 bg-gradient-to-br from-[#8A3BC0] to-[#F15BA6] rounded-xl opacity-100" />
+                      )}
+                      {index === 1 && (
+                        <div className="absolute inset-0 bg-gradient-to-br from-[#0E8D8D] to-[#14b6b6] rounded-xl opacity-100" />
+                      )}
+                      <span
+                        className={`relative text-lg font-black ${
+                          index === 0 || index === 1
+                            ? "text-white"
+                            : "text-gray-600"
+                        }`}
+                        style={
+                          index === 0 || index === 1
+                            ? { textShadow: "0 1px 2px rgba(0,0,0,0.3)" }
+                            : {}
+                        }
+                      >
+                        #{index + 1}
+                      </span>
                     </div>
                     <div>
                       <p className="text-sm font-semibold text-intenso-text truncate">

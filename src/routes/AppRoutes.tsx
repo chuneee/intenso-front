@@ -21,10 +21,18 @@ import CreadorDashboard from "@/app/components/creador/CreadorDashboard";
 import BrandsPage from "@/app/components/brands/BrandsPage";
 
 import { paths } from "@/routes/paths";
-import { getDefaultPathForRole, RequireAuth, RequireRole } from "@/routes/guards";
+import {
+  getDefaultPathForRole,
+  RequireAuth,
+  RequireRole,
+} from "@/routes/guards";
 
 function LoginRoute() {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, isLoading } = useAuth();
+
+  if (isLoading) {
+    return null; // O puedes retornar un spinner/loading component
+  }
 
   if (isAuthenticated && user) {
     return <Navigate to={getDefaultPathForRole(user.type)} replace />;
@@ -34,7 +42,11 @@ function LoginRoute() {
 }
 
 export default function AppRoutes() {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, isLoading } = useAuth();
+
+  if (isLoading) {
+    return null; // O puedes retornar un spinner/loading component
+  }
 
   return (
     <BrowserRouter>
